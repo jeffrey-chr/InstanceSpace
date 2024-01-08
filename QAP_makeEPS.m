@@ -1,4 +1,5 @@
-function scriptEPS(container,rootdir)
+function QAP_makeEPS(container,rootdir)
+
 % -------------------------------------------------------------------------
 % pgnscript.m
 % -------------------------------------------------------------------------
@@ -10,7 +11,7 @@ function scriptEPS(container,rootdir)
 %     2020
 %
 % -------------------------------------------------------------------------
-
+% Modified version to produce .EPS files
 % -------------------------------------------------------------------------
 % Preliminaries
 scriptfcn;

@@ -1,3 +1,7 @@
+% Create supplemental plots like the sub-sources plots.
+
+rootdir = '.\QAPdata\';
+model = load('.\QAPdata\model.mat');
 suppfile = [rootdir 'suppdata.csv'];
 supp = readtable(suppfile);
 supplabels = supp.Properties.VariableNames;
@@ -47,9 +51,37 @@ hold off
 xlabel('z_{1}'); ylabel('z_{2}');
 set(findall(gcf,'-property','FontSize'),'FontSize',20);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
-axis square; axis([-4 4 -4 4]);
+axis square; axis([floor(min(Z(:,1))) ceil(max(Z(:,1))) floor(min(Z(:,2))) ceil(max(Z(:,2)))]);
 print(gcf,'-depsc',[rootdir 'perfBMA_MMAS.eps']);
 %colorbar('EastOutside');
+
+clf
+Z = model.pilot.Z;
+cats = model.data.Ybin*[1;2;4];
+BLSonly = (cats == 1);
+BMAonly = (cats == 2);
+BLSandBMA = (cats == 3);
+MMASonly = (cats == 4);
+BLSandMMAS = (cats == 5);
+BMAandMMAS = (cats == 6);
+allalgs = (cats == 7);
+hold on
+scatter(Z(allalgs,1), Z(allalgs,2),10,'MarkerEdgeColor',[0.6 0.6 0.6],'MarkerFaceColor',[0.6 0.6 0.6]);
+scatter(Z(BLSandBMA,1), Z(BLSandBMA,2),20,'MarkerEdgeColor',[0.8 0.8 0],'MarkerFaceColor',[0.8 0.8 0]);
+scatter(Z(BLSandMMAS,1), Z(BLSandMMAS,2),20,'MarkerEdgeColor',[0.8 0 0.8],'MarkerFaceColor',[0.8 0 0.8]);
+scatter(Z(BMAandMMAS,1), Z(BMAandMMAS,2),20,'MarkerEdgeColor',[0 0.8 0.8],'MarkerFaceColor',[0 0.8 0.8]);
+scatter(Z(MMASonly,1), Z(MMASonly,2),80,'Marker','pentagram','MarkerEdgeColor',[0 0 0],'MarkerFaceColor',[0 0 1], 'LineWidth', 2);
+scatter(Z(BLSonly,1), Z(BLSonly,2),80,'Marker','pentagram','MarkerEdgeColor',[0 0 0],'MarkerFaceColor',[1 0 0], 'LineWidth', 2);
+scatter(Z(BMAonly,1), Z(BMAonly,2),80,'Marker','pentagram','MarkerEdgeColor',[0 0 0],'MarkerFaceColor',[0 1 0], 'LineWidth', 2);
+hold off
+xlabel('z_{1}'); ylabel('z_{2}');
+set(findall(gcf,'-property','FontSize'),'FontSize',20);
+set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
+axis square; axis([floor(min(Z(:,1))) ceil(max(Z(:,1))) floor(min(Z(:,2))) ceil(max(Z(:,2)))]);
+legend("All similar","Good BLS+BMA","Good BLS+MMAS","Good BMA+MMAS","Good MMAS only","Good BLS only","Good BMA only","Location","eastoutside")
+print(gcf,'-depsc',[rootdir 'distribution_portfolio_alt.eps']);
+print(gcf,'-dpng',[rootdir 'distribution_portfolio_alt.png']);
+
 
 function handle = drawSubSources(Z, subS, supS, rootdir)
 
@@ -60,13 +92,13 @@ sourcelabels = cellstr(unique(subS));
 nsources = length(sourcelabels);
 clrs = flipud(colorcube(nsources+4));
 clrs = clrs(2:end-3,:);
-clrs = clrs([(0:4)*4+1,(0:4)*4+2,(0:4)*4+3,(0:4)*4+4],:);
+clrs = clrs([1:4:nsources,2:4:nsources,3:4:nsources,4:4:nsources],:);
 handle = zeros(nsources,1);
 
 supercats = categories(supS);
 %symbols = {'o','x','s', '^', '+', "pentagram", '<'};
-symbols = {'+','s','*', '^', 'o', "pentagram", 'hexagram'};
-sizes = [5,5,5,5,5,5,5];
+symbols = {'>','+','s','*', '^', 'o', "pentagram", 'hexagram'};
+sizes = [5,5,5,5,5,5,5,5];
 
 for i=nsources:-1:1
     subsI = (subS==sourcelabels{i});
