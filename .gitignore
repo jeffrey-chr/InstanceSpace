@@ -5,6 +5,7 @@
 *.mat
 *.db
 *.csv
+*.eps
 old_versions/*.*
 old_versions
 *.json
