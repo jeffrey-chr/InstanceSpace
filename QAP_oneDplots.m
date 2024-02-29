@@ -28,18 +28,15 @@ for i = 2:size(unft,2)
     print(gcf,'-dpng',['./oneDplots/size/size_' tmp{1}(9:end)]);
 end
 
-for i = 2:size(unft,2)
-    tmp = unft.Properties.VariableNames(i);
-    scatter(unft.(tmp{1}), model.data.Yraw(mnI,1),'blue','.');
-    hold on
-    scatter(unft.(tmp{1}), model.data.Yraw(mnI,2),'red','.');
-    scatter(unft.(tmp{1}), model.data.Yraw(mnI,3),'green','.');
-    hold off
-    legend(model.data.algolabels{1},model.data.algolabels{2},model.data.algolabels{3},'Location','eastoutside');
-    title(tmp{1}(9:end));
-    %xlim([0, max(unft.feature_Size) + 10])
-    xlabel('Feature');
-    ylabel('Performance');
-    %print(gcf,'-depsc',['./oneDplots/size/size_' tmp{1}(9:end)]);
-    print(gcf,'-dpng',['./oneDplots/perf/perf_' tmp{1}(9:end)]);
+for alg = 1:length(model.data.algolabels)
+    for i = 2:size(unft,2)
+        tmp = unft.Properties.VariableNames(i);
+        scatter(unft.(tmp{1}), model.data.Yraw(mnI,alg),'blue','.');
+        title([tmp{1}(9:end) ' vs ' model.data.algolabels{alg}] );
+        %xlim([0, max(unft.feature_Size) + 10])
+        xlabel('Feature');
+        ylabel(model.data.algolabels{alg});
+        %print(gcf,'-depsc',['./oneDplots/size/size_' tmp{1}(9:end)]);
+        print(gcf,'-dpng',['./oneDplots/' model.data.algolabels{alg} '/' model.data.algolabels{alg} '_' tmp{1}(9:end)]);
+    end
 end
