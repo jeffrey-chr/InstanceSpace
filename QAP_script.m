@@ -36,7 +36,7 @@ opts.selvars.mindistance = 0.1;
 
 opts.sifted.flag = true;            % Automatic feature selectio on. Set to false if you don't want any feature selection.
 opts.sifted.rho = 0.25; %0.25               % Minimum correlation value acceptable between performance and a feature. Between 0 and 1
-opts.sifted.K = 8; %7                % Number of final features. Ideally less than 10.
+opts.sifted.K = 7; %7                % Number of final features. Ideally less than 10.
 opts.sifted.NTREES = 50;            % Number of trees for the Random Forest (to determine highest separability in the 2-d projection)
 opts.sifted.MaxIter = 1000;
 opts.sifted.Replicates = 100;

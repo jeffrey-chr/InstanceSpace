@@ -97,8 +97,8 @@ handle = zeros(nsources,1);
 
 supercats = categories(supS);
 %symbols = {'o','x','s', '^', '+', "pentagram", '<'};
-symbols = {'>','+','s','*', '^', 'o', "pentagram", 'hexagram'};
-sizes = [5,5,5,5,5,5,5,5];
+symbols = {'>','+','s','*', '^', 'o', "pentagram", 'hexagram', 'd'};
+sizes = [5,5,5,5,5,5,5,5,5];
 
 for i=nsources:-1:1
     subsI = (subS==sourcelabels{i});
