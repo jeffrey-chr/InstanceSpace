@@ -17,6 +17,8 @@ if ~all(strcmp(model.data.instlabels(mnI), unft.instances(ufI)))
     error("Instance names do not match");
 end
 
+rmdir('./oneDplots/size', 's')
+mkdir('./oneDplots/size')
 for i = 2:size(unft,2)
     tmp = unft.Properties.VariableNames(i);
     scatter(unft.feature_Size, unft.(tmp{1}),'blue','filled');
@@ -29,6 +31,8 @@ for i = 2:size(unft,2)
 end
 
 for alg = 1:length(model.data.algolabels)
+    rmdir(['./oneDplots/perf_' model.data.algolabels{alg}], 's')
+    mkdir(['./oneDplots/perf_' model.data.algolabels{alg}])
     for i = 2:size(unft,2)
         tmp = unft.Properties.VariableNames(i);
         scatter(unft.(tmp{1}), model.data.Yraw(mnI,alg),'blue','.');
@@ -37,6 +41,6 @@ for alg = 1:length(model.data.algolabels)
         xlabel('Feature');
         ylabel(model.data.algolabels{alg});
         %print(gcf,'-depsc',['./oneDplots/size/size_' tmp{1}(9:end)]);
-        print(gcf,'-dpng',['./oneDplots/' model.data.algolabels{alg} '/' model.data.algolabels{alg} '_' tmp{1}(9:end)]);
+        print(gcf,'-dpng',['./oneDplots/perf_' model.data.algolabels{alg} '/' model.data.algolabels{alg} '_' tmp{1}(9:end)]);
     end
 end
