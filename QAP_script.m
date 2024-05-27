@@ -3,10 +3,11 @@
 clear
 
 rootdir = './QAPdata/';
+%rootdir = './QAPdata_without_BLS/';
 
 fexist = dir(rootdir);
 for i = 1:length(fexist)
-    if ~strcmp(fexist(i).name,'.') && ~strcmp(fexist(i).name,'..') && ~strcmp(fexist(i).name,'metadata.csv') && ~strcmp(fexist(i).name,'suppdata.csv')
+    if ~strcmp(fexist(i).name,'.') && ~strcmp(fexist(i).name,'..') && ~strcmp(fexist(i).name,'metadata.csv') && ~strcmp(fexist(i).name,'suppdata.csv') && ~strcmp(fexist(i).name,'RLLidx.csv')
         delete(strcat(rootdir,fexist(i).name));
     end
 end
@@ -18,7 +19,7 @@ opts.parallel.ncores = 2;
 
 opts.perf.MaxPerf = false;          % True if Y is a performance measure to maximize, False if it is a cost measure to minimise.
 opts.perf.AbsPerf = true;           % True if an absolute performance measure, False if a relative performance measure
-opts.perf.epsilon = 1.0 %0.5;           % Threshold of good performance
+opts.perf.epsilon = 1;           % Threshold of good performance
 opts.perf.betaThreshold = 0.55;     % Beta-easy threshold
 opts.auto.preproc = true;           % Automatic preprocessing on. Set to false if you don't want any preprocessing
 opts.bound.flag = true;             % Bound the outliers. True if you want to bound the outliers, false if you don't
@@ -31,6 +32,8 @@ opts.selvars.smallscale = 0.50;     % Percentage of instances to be kept for a s
 % should be lower than the number of instances
 opts.selvars.fileidxflag = false;
 opts.selvars.fileidx = '';
+%opts.selvars.fileidxflag = true;
+%opts.selvars.fileidx = 'C:\Repos\Research\ISA-QAP\ISA\QAPdata\RLLidx.csv';
 opts.selvars.densityflag = false;
 opts.selvars.mindistance = 0.1;
 

@@ -1,7 +1,7 @@
 % Create supplemental plots like the sub-sources plots.
 
 rootdir = '.\QAPdata\';
-model = load('.\QAPdata\model.mat');
+model = load([rootdir 'model.mat']);
 suppfile = [rootdir 'suppdata.csv'];
 supp = readtable(suppfile);
 supplabels = supp.Properties.VariableNames;
@@ -81,6 +81,45 @@ axis square; axis([floor(min(Z(:,1))) ceil(max(Z(:,1))) floor(min(Z(:,2))) ceil(
 legend("All similar","Good BLS+BMA","Good BLS+MMAS","Good BMA+MMAS","Good MMAS only","Good BLS only","Good BMA only","Location","eastoutside")
 print(gcf,'-depsc',[rootdir 'distribution_portfolio_alt.eps']);
 print(gcf,'-dpng',[rootdir 'distribution_portfolio_alt.png']);
+
+lineqns = zeros(2,size(model.data.Yraw,2));
+for i = 1:size(model.data.Yraw,2)
+    clf
+    Ydata = model.data.Yraw(:,i);
+    Pr0hat = model.pythia.Pr0hat(:,i);
+    X = [ones(size(Pr0hat,1),1),Pr0hat];
+    Leq = X \ Ydata;
+    %pred = Leq(1) + Leq(2)*Yraw;
+    scatter(Pr0hat, Ydata)
+    hold on
+    fplot(@(x) Leq(1) + Leq(2)*x, [min(Pr0hat),max(Pr0hat)]);
+    xlabel("Pr0hat from SVM")
+    ylabel(strcat("Performance of ", model.data.algolabels{i}));
+    title("Linear Regression Relation between Pr0hat and Performance")
+    hold off
+    print(gcf,'-dpng',[rootdir model.data.algolabels{i} '_linreg.png']);
+
+    lineqns(1,i) = Leq(1);
+    lineqns(2,i) = Leq(2);
+end
+
+clf
+proj_perform = model.pythia.Pr0hat .* lineqns(2,:) + lineqns(1,:);
+[~, idx] = min(proj_perform,[],2);
+hold on
+Z = model.pilot.Z;
+for i = 1:size(model.data.Yraw,2)
+    choice(:,i) = (idx == i);
+    color = [0 0 0]; % this is a hack but im in a hurry
+    color(i) = 1;
+    scatter(Z(choice(:,i),1), Z(choice(:,i),2),20,'MarkerEdgeColor',color,'MarkerFaceColor',color);
+end
+title("Pr0hat informed prediction of best alg");
+legend("BLS","BMA","MMAS");
+print(gcf,'-dpng','Pr0hat_prediction.png');
+hold off
+
+
 
 
 function handle = drawSubSources(Z, subS, supS, rootdir)
