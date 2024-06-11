@@ -7,11 +7,25 @@ supp = readtable(suppfile);
 supplabels = supp.Properties.VariableNames;
 issubsource = strcmpi(supplabels,'subsource');
 subS = categorical(supp{:,issubsource});
-%figure
 clf
 %set(gcf, 'Position',  [0, 100, 800, 800])
 drawSubSources(model.pilot.Z, subS, model.data.S, rootdir);
+print(gcf,'-dpng',[rootdir 'distribution_subsources.png']);
 print(gcf,'-depsc',[rootdir 'subsource.eps']);
+
+libstr = "qaplib";
+subscats = categories(subS);
+islib = zeros(length(subscats),1);
+for i = 1:length(subscats)
+    islib(i) = contains(subscats{i},libstr);
+end
+libcats = subscats(find(islib));
+islibinst = ismember(subS,libcats);
+drawSubset(model.pilot.Z, islibinst);
+print(gcf,'-dpng',[rootdir 'distribution_QAPLIB.png']);
+print(gcf,'-depsc',[rootdir 'qaplib.eps']);
+
+
 
 clf
 drawArrow = @(x,y,varargin) quiver( x(1),y(1),x(2)-x(1),y(2)-y(1),0, varargin{:} );
@@ -36,25 +50,7 @@ hold off
 print(gcf,'-dpng',[rootdir 'arrows.png']);
 print(gcf,'-depsc',[rootdir 'arrows.eps']);
 
-clf
-%set(gcf, 'Position',  [0, 100, 800, 800])
-Z = model.pilot.Z;
-BMAbad = (model.data.Ybin(:,2) == 0);
-MMASbad = (model.data.Ybin(:,3) == 0);
-%handle = scatter(Z(:,1), Z(:,2), 8, X, 'filled');
-hold on
-scatter(Z(:,1), Z(:,2),10,'MarkerEdgeColor',[0.6 0.6 0.6],'MarkerFaceColor',[0.6 0.6 0.6]);
-scatter(Z(BMAbad,1), Z(BMAbad,2),120,'Marker','x','MarkerEdgeColor',[1 0 0],'MarkerFaceColor',[1 0 0]);
-scatter(Z(MMASbad,1), Z(MMASbad,2),100,'Marker','+','MarkerEdgeColor',[0 0 1],'MarkerFaceColor',[0 0 1]);
-hold off
-%caxis([0,1])
-xlabel('z_{1}'); ylabel('z_{2}');
-set(findall(gcf,'-property','FontSize'),'FontSize',20);
-set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
-axis square; axis([floor(min(Z(:,1))) ceil(max(Z(:,1))) floor(min(Z(:,2))) ceil(max(Z(:,2)))]);
-print(gcf,'-depsc',[rootdir 'perfBMA_MMAS.eps']);
-%colorbar('EastOutside');
-
+if size(model.data.Ybin,2) == 3
 clf
 Z = model.pilot.Z;
 cats = model.data.Ybin*[1;2;4];
@@ -81,6 +77,7 @@ axis square; axis([floor(min(Z(:,1))) ceil(max(Z(:,1))) floor(min(Z(:,2))) ceil(
 legend("All similar","Good BLS+BMA","Good BLS+MMAS","Good BMA+MMAS","Good MMAS only","Good BLS only","Good BMA only","Location","eastoutside")
 print(gcf,'-depsc',[rootdir 'distribution_portfolio_alt.eps']);
 print(gcf,'-dpng',[rootdir 'distribution_portfolio_alt.png']);
+end
 
 lineqns = zeros(2,size(model.data.Yraw,2));
 for i = 1:size(model.data.Yraw,2)
@@ -158,6 +155,24 @@ set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
 axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
 
-print(gcf,'-dpng',[rootdir 'distribution_subsources.png']);
+end
+
+function handle = drawSubset(Z, subset)
+
+clf
+ubound = ceil(max(Z));
+lbound = floor(min(Z));
+handle = zeros(2,1);
+
+hold on
+handle(1) = scatter(Z(~subset,1), Z(~subset,2),10,'MarkerEdgeColor',[0.6 0.6 0.6],'MarkerFaceColor',[0.6 0.6 0.6], 'Marker', 'o');
+handle(2) = scatter(Z(subset,1), Z(subset,2),10,'MarkerEdgeColor',[1 0 0],'MarkerFaceColor',[1 0 0], 'Marker', 'pentagram');
+hold off
+
+xlabel('z_{1}'); ylabel('z_{2}'); title('Selected instances');
+%legend(handle, sourcelabels, 'Location', 'NorthEastOutside');
+set(findall(gcf,'-property','FontSize'),'FontSize',12);
+set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
+axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
 
 end
