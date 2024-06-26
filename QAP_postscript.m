@@ -112,12 +112,30 @@ for i = 1:size(model.data.Yraw,2)
     scatter(Z(choice(:,i),1), Z(choice(:,i),2),20,'MarkerEdgeColor',color,'MarkerFaceColor',color);
 end
 title("Pr0hat informed prediction of best alg");
-legend("BLS","BMA","MMAS");
+legend("BMA","MMAS");
 print(gcf,'-dpng','Pr0hat_prediction.png');
 hold off
 
+sub1 = choice(:,1);
+sub2 = choice(:,2);
+xx1 = sum(model.data.Ybin(sub1,1) == 1);
+xx2 = sum(model.data.Ybin(sub2,2) == 1);
+xx = (xx1 + xx2) / length(model.data.Ybin(:,1))
+yy = sum(idx == model.data.P)
 
 
+clf
+ubound = ceil(max(Z));
+lbound = floor(min(Z));
+handle = scatter(Z(:,1), Z(:,2), 8, log(supp.unique_BMA + supp.unique_MMAS), 'filled');
+%caxis([0,1])
+xlabel('z_{1}'); ylabel('z_{2}');
+set(findall(gcf,'-property','FontSize'),'FontSize',12);
+set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
+axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
+colorbar('EastOutside');
+title("Log of number of unique BMA div MMAS solutions");
+print(gcf,'-dpng','logunique_BMA.png');
 
 function handle = drawSubSources(Z, subS, supS, rootdir)
 

@@ -1,4 +1,4 @@
-function QAP_makeEPS(container,rootdir)
+function QAP_makeEPS(container,rootdir,outdir)
 
 % -------------------------------------------------------------------------
 % pgnscript.m
@@ -45,8 +45,9 @@ for i=1:nfeats
     title(''); xlim(xl); ylim(yl);
     set(findall(gcf,'-property','SizeData'),'SizeData',60);
     set(findall(gcf,'-property','FontSize'),'FontSize',20);
-    print(gcf,'-depsc',[rootdir 'eps\distribution_feature_' container.data.featlabels{i} '.eps']);
-    print(gcf,'-dpng',[rootdir 'eps\distribution_feature_' container.data.featlabels{i} '.png']);
+    print(gcf,'-depsc',[outdir 'eps\distribution_feature_' container.data.featlabels{i} '.eps']);
+    print(gcf,'-dpng',[outdir 'eps\distribution_feature_' container.data.featlabels{i} '.png']);
+    %print([outdir 'distribution_feature_' container.data.featlabels{i} '.eps'], '-depsc');
 end
 % -------------------------------------------------------------------------
 % Drawing algorithm performance/footprint plots
@@ -55,12 +56,12 @@ for i=1:nalgos
     clf;
     drawScatter(container.pilot.Z, Yglb(:,i), ...
                 strrep(container.data.algolabels{i},'_',' '));
-    print(gcf,'-depsc',[rootdir 'eps\distribution_performance_global_normalized_' container.data.algolabels{i} '.eps']);
+    print(gcf,'-depsc',[outdir 'eps\distribution_performance_global_normalized_' container.data.algolabels{i} '.eps']);
     % Actual performance, normalized individualy
     clf;
     drawScatter(container.pilot.Z, Yind(:,i), ...
                 strrep(container.data.algolabels{i},'_',' '));
-    print(gcf,'-depsc',[rootdir 'eps\distribution_performance_individual_normalized_' container.data.algolabels{i} '.eps']);
+    print(gcf,'-depsc',[outdir 'eps\distribution_performance_individual_normalized_' container.data.algolabels{i} '.eps']);
     % Actual binary performance
     clf;
     drawBinaryPerformance(container.pilot.Z, container.data.Ybin(:,i), ...
@@ -70,15 +71,15 @@ for i=1:nalgos
     set(findall(gcf,'-property','FontSize'),'FontSize',20);
     s=findobj('type','legend');
     delete(s);
-    saveas(gcf, [rootdir 'eps\binary_performance_' container.data.algolabels{i} '.fig'])
-    print(gcf,'-depsc',[rootdir 'eps\binary_performance_' container.data.algolabels{i} '.eps']);
-    print(gcf,'-dpng',[rootdir 'eps\binary_performance_' container.data.algolabels{i} '.png']);
+    saveas(gcf, [outdir 'eps\binary_performance_' container.data.algolabels{i} '.fig'])
+    print(gcf,'-depsc',[outdir 'eps\binary_performance_' container.data.algolabels{i} '.eps']);
+    print(gcf,'-dpng',[outdir 'eps\binary_performance_' container.data.algolabels{i} '.png']);
     % Drawing the SVM's predictions of good performance
     try
         clf;
         drawBinaryPerformance(container.pilot.Z, container.pythia.Yhat(:,i), ...
                               strrep(container.data.algolabels{i},'_',' '));
-        print(gcf,'-depsc',[rootdir 'eps\binary_svm_' container.data.algolabels{i} '.eps']);
+        print(gcf,'-depsc',[outdir 'eps\binary_svm_' container.data.algolabels{i} '.eps']);
     catch
         disp('No SVM model has been trained');
     end
@@ -90,7 +91,7 @@ for i=1:nalgos
                              container.trace.good{i}, ...
                              Yfoot(:,i), ...
                              strrep(container.data.algolabels{i},'_',' '));
-        print(gcf,'-depsc',[rootdir 'eps\footprint_' container.data.algolabels{i} '.eps']);
+        print(gcf,'-depsc',[outdir 'eps\footprint_' container.data.algolabels{i} '.eps']);
     catch
         disp('No Footprint has been calculated');
     end
@@ -99,17 +100,17 @@ end
 % Plotting the number of good algos
 clf;
 drawScatter(container.pilot.Z, container.data.numGoodAlgos./nalgos, 'Percentage of good algorithms');
-print(gcf,'-depsc',[rootdir 'eps\distribution_number_good_algos.eps']);
+print(gcf,'-depsc',[outdir 'eps\distribution_number_good_algos.eps']);
 % ---------------------------------------------------------------------
 % Drawing the algorithm performance
 clf;
 drawPortfolioSelections(container.pilot.Z, container.data.P, container.data.algolabels, 'Best algorithm');
-print(gcf,'-depsc',[rootdir 'eps\distribution_portfolio.eps']);
+print(gcf,'-depsc',[outdir 'eps\distribution_portfolio.eps']);
 % ---------------------------------------------------------------------
 % Drawing the SVM's recommendations
 clf;
 drawPortfolioSelections(container.pilot.Z, container.pythia.selection0, container.data.algolabels, 'Predicted best algorithm');
-print(gcf,'-depsc',[rootdir 'eps\distribution_svm_portfolio.eps']);
+print(gcf,'-depsc',[outdir 'eps\distribution_svm_portfolio.eps']);
 % ---------------------------------------------------------------------
 % Drawing the footprints as portfolio.
 clf;
@@ -119,20 +120,20 @@ s=findobj('type','legend');
 delete(s);
 set(findall(gcf,'-property','MarkerSize'),'MarkerSize',15);
 set(findall(gcf,'-property','FontSize'),'FontSize',20);
-saveas(gcf, [rootdir 'eps\footprint_portfolio.fig'])
-print(gcf,'-depsc',[rootdir 'eps\footprint_portfolio.eps']);
-print(gcf,'-dpng',[rootdir 'eps\footprint_portfolio.png']);
+saveas(gcf, [outdir 'eps\footprint_portfolio.fig'])
+print(gcf,'-depsc',[outdir 'eps\footprint_portfolio.eps']);
+print(gcf,'-dpng',[outdir 'eps\footprint_portfolio.png']);
 % ---------------------------------------------------------------------
 % Plotting the model.data.beta score
 clf;
 drawBinaryPerformance(container.pilot.Z, container.data.beta, '\beta score');
-print(gcf,'-depsc',[rootdir 'eps\distribution_beta_score.eps']);
+print(gcf,'-depsc',[outdir 'eps\distribution_beta_score.eps']);
 % ---------------------------------------------------------------------
 % Drawing the sources of the instances if available
 if isfield(container.data,'S')
     clf;
     drawSources(container.pilot.Z, container.data.S);
-    print(gcf,'-depsc',[rootdir 'eps\distribution_sources.eps']);
+    print(gcf,'-depsc',[outdir 'eps\distribution_sources.eps']);
 end
 
 % draw which instances are in QAPLIB
@@ -182,8 +183,8 @@ s=findobj('type','legend');
 delete(s);
 %set(findall(gcf,'-property','MarkerSize'),'MarkerSize',15);
 set(findall(gcf,'-property','FontSize'),'FontSize',20);
-print(gcf,'-depsc',[rootdir 'eps\distribution_qaplib.eps']);
-print(gcf,'-dpng',[rootdir 'eps\distribution_qaplib.png']);
+print(gcf,'-depsc',[outdir 'eps\distribution_qaplib.eps']);
+print(gcf,'-dpng',[outdir 'eps\distribution_qaplib.png']);
 
 % draw which instances are in QAPLIB
 clf;
@@ -238,5 +239,82 @@ s=findobj('type','legend');
 delete(s);
 %set(findall(gcf,'-property','MarkerSize'),'MarkerSize',15);
 set(findall(gcf,'-property','FontSize'),'FontSize',20);
-print(gcf,'-depsc',[rootdir 'eps\distribution_type.eps']);
-print(gcf,'-dpng',[rootdir 'eps\distribution_type.png']);
+print(gcf,'-depsc',[outdir 'eps\distribution_type.eps']);
+print(gcf,'-dpng',[outdir 'eps\distribution_type.png']);
+
+clf;
+if true
+    Z = container.pilot.Z;
+    S = typesource;
+    ubound = ceil(max(Z));
+    lbound = floor(min(Z));
+    %clrs = flipud(lines(nsources));
+    clrs = [1 0 0; 0 0 1; 0.6 0.6 0.6];
+    sizes = [15 15 15];
+    markers = ['x' '+' '.'];
+    handle = zeros(3,1);
+    cats = container.data.Ybin*[1;2];
+    BMAonly = (cats == 1);
+    MMASonly = (cats == 2);
+    BMAandMMAS = (cats == 3);
+    handle(3) = line(Z(BMAandMMAS,1), ...
+                     Z(BMAandMMAS,2), ...
+                     'LineStyle', 'none', ...
+                     'Marker', markers(3), ...
+                     'Color', clrs(3,:), ...
+                     'MarkerFaceColor', clrs(3,:), ...
+                     'MarkerSize', sizes(3));
+    handle(1) = line(Z(BMAonly,1), ...
+                     Z(BMAonly,2), ...
+                     'LineStyle', 'none', ...
+                     'Marker', markers(1), ...
+                     'Color', clrs(1,:), ...
+                     'MarkerFaceColor', clrs(1,:), ...
+                     'MarkerSize', sizes(1));
+    handle(2) = line(Z(MMASonly,1), ...
+                     Z(MMASonly,2), ...
+                     'LineStyle', 'none', ...
+                     'Marker', markers(2), ...
+                     'Color', clrs(2,:), ...
+                     'MarkerFaceColor', clrs(2,:), ...
+                     'MarkerSize', sizes(2));
+    
+    xlabel('z_{1}'); ylabel('z_{2}'); %title('Sources');
+    %legend(handle, sourcelabels, 'Location', 'NorthEastOutside');
+    set(findall(gcf,'-property','FontSize'),'FontSize',12);
+    set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
+    axis square; axis([-4 4 -4 4]);
+    print(gcf,'-depsc',[outdir 'eps\findbad.eps']);
+end
+
+lineqns = zeros(2,size(container.data.Yraw,2));
+for i = 1:size(container.data.Yraw,2)
+    clf
+    Ydata = container.data.Yraw(:,i);
+    Pr0hat = container.pythia.Pr0hat(:,i);
+    X = [ones(size(Pr0hat,1),1),Pr0hat];
+    Leq = X \ Ydata;
+    %pred = Leq(1) + Leq(2)*Yraw;
+
+    lineqns(1,i) = Leq(1);
+    lineqns(2,i) = Leq(2);
+end
+
+clf
+proj_perform = container.pythia.Pr0hat .* lineqns(2,:) + lineqns(1,:);
+[~, idx] = min(proj_perform,[],2);
+hold on
+Z = container.pilot.Z;
+i=1;
+choice(:,i) = (idx == i);
+    color = [1 0 0]; % this is a hack but im in a hurry
+    scatter(Z(choice(:,i),1), Z(choice(:,i),2),20,'MarkerEdgeColor',color,'MarkerFaceColor',color);
+i=2;
+   choice(:,i) = (idx == i);
+    color = [0 0 1]; % this is a hack but im in a hurry
+    scatter(Z(choice(:,i),1), Z(choice(:,i),2),20,'MarkerEdgeColor',color,'MarkerFaceColor',color);
+
+%title("Pr0hat informed prediction of best alg");
+%legend("BMA","MMAS");
+print(gcf,'-depsc',[outdir 'eps\Pr0hat_prediction.eps']);
+hold off
