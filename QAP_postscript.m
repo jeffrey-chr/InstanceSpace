@@ -1,6 +1,6 @@
 % Create supplemental plots like the sub-sources plots.
 
-rootdir = '.\QAPdata\';
+rootdir = '.\QAPdata_expanded\';
 model = load([rootdir 'model.mat']);
 suppfile = [rootdir 'suppdata.csv'];
 supp = readtable(suppfile);
@@ -116,6 +116,23 @@ legend("BMA","MMAS");
 print(gcf,'-dpng','Pr0hat_prediction.png');
 hold off
 
+clf
+proj_perform = model.pythia.Pr0hat .* lineqns(2,:) + lineqns(1,:);
+[~, idx] = min(proj_perform,[],2);
+hold on
+Z = model.pilot.Z;
+choice(:,2:-1:1) = (model.data.Yraw > 0.5);
+choice(:,3) = (sum(choice(:,1:2),2) == 0);
+
+scatter(Z(choice(:,1),1), Z(choice(:,1),2),20,'MarkerEdgeColor',[1 0 0],'MarkerFaceColor',[1 0 0]);
+scatter(Z(choice(:,2),1), Z(choice(:,2),2),20,'MarkerEdgeColor',[0 0 1],'MarkerFaceColor',[0 0 1]);
+scatter(Z(choice(:,3),1), Z(choice(:,3),2),20,'MarkerEdgeColor',[0.5 0.5 0.5],'MarkerFaceColor',[0.5 0.5 0.5]);
+title("Better best algorithm");
+legend("BMA","MMAS", "Similar");
+print(gcf,'-dpng','better_best_alg.png');
+hold off
+
+
 sub1 = choice(:,1);
 sub2 = choice(:,2);
 xx1 = sum(model.data.Ybin(sub1,1) == 1);
@@ -123,7 +140,7 @@ xx2 = sum(model.data.Ybin(sub2,2) == 1);
 xx = (xx1 + xx2) / length(model.data.Ybin(:,1))
 yy = sum(idx == model.data.P)
 
-
+if false
 clf
 ubound = ceil(max(Z));
 lbound = floor(min(Z));
@@ -136,6 +153,7 @@ axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
 colorbar('EastOutside');
 title("Log of number of unique BMA div MMAS solutions");
 print(gcf,'-dpng','logunique_BMA.png');
+end
 
 function handle = drawSubSources(Z, subS, supS, rootdir)
 

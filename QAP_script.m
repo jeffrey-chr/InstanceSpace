@@ -7,7 +7,7 @@ rootdir = './QAPdata/';
 
 fexist = dir(rootdir);
 for i = 1:length(fexist)
-    if ~strcmp(fexist(i).name,'.') && ~strcmp(fexist(i).name,'..') && ~strcmp(fexist(i).name,'metadata.csv') && ~strcmp(fexist(i).name,'suppdata.csv') && ~strcmp(fexist(i).name,'RLLidx.csv')
+    if ~strcmp(fexist(i).name,'.') && ~strcmp(fexist(i).name,'..') && ~strcmp(fexist(i).name,'metadata.csv') && ~strcmp(fexist(i).name,'suppdata.csv')
         delete(strcat(rootdir,fexist(i).name));
     end
 end
