@@ -5,11 +5,13 @@ clear
 rootdir = './QAPdata/';
 %rootdir = './QAPdata_without_BLS/';
 
+if false
 fexist = dir(rootdir);
 for i = 1:length(fexist)
     if ~strcmp(fexist(i).name,'.') && ~strcmp(fexist(i).name,'..') && ~strcmp(fexist(i).name,'metadata.csv') && ~strcmp(fexist(i).name,'suppdata.csv')
         delete(strcat(rootdir,fexist(i).name));
     end
+end
 end
 
 clearvars -except rootdir
