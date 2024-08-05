@@ -1,17 +1,175 @@
 % Create plots of intitial space 
+clear;
 
-rootdir = '.\QAPdata\';
+rootdir = '..\QAPdata\';
 model = load([rootdir 'model.mat']);
 suppfile = [rootdir 'suppdata.csv'];
 supp = readtable(suppfile);
 supplabels = supp.Properties.VariableNames;
 issubsource = strcmpi(supplabels,'subsource');
 subS = categorical(supp{:,issubsource});
+
+outputdir = '.\output\';
+
+nfeats = length(model.data.featlabels);
+
+f = gcf;
+f.Position = [50 750 800 600];
+
+cmap = @copper;
+
+alteredscriptfcn
+
+% source plots
+
+% category plot
+bigsources = repmat([""], length(supp.subsource), 1);
+for i = 1:length(bigsources)
+    if startsWith(supp.subsource{i},"real-")
+        bigsources(i) = "Real data";
+    elseif startsWith(supp.subsource{i},"reallike-")
+        bigsources(i) = "Real-like instance";
+    elseif startsWith(supp.subsource{i},"manhat-")
+        bigsources(i) = "Grid-based distances";
+    elseif startsWith(supp.subsource{i},"random-")
+        bigsources(i) = "Uniform random data";
+    else
+        bigsources(i) = "Other instances";
+    end
+end
+bigsourcescat = categorical(bigsources);
+
+drawSources(model.pilot.Z, bigsourcescat, cmap);
+title('Instance Categories')
+print(gcf,'-dpng',[outputdir 'init_sources.png']);
+print(gcf,'-depsc',[outputdir 'init_sources.eps']);
+
+% reallike plot
+RLsources = repmat([""], length(supp.subsource), 1);
+for i = 1:length(RLsources)
+    if startsWith(supp.subsource{i},"reallike-SF-euc-plu")
+        RLsources(i) = "SFgen, StructPlus flows";
+    elseif startsWith(supp.subsource{i},"reallike-SF-euc-ran")
+        RLsources(i) = "SFgen, Random flows";
+    elseif startsWith(supp.subsource{i},"reallike-SF-euc-str")
+        RLsources(i) = "SFgen, Structured flows";
+    elseif startsWith(supp.subsource{i},"reallike-gen-taiBN")
+        RLsources(i) = "Tgen, normal distances";
+    elseif startsWith(supp.subsource{i},"reallike-gen-taiBT")
+        RLsources(i) = "Tgen, tilted distances";
+    elseif startsWith(supp.subsource{i},"reallike-qaplib")
+        RLsources(i) = "QAPLIB instances";
+    else
+        RLsources(i) = "";
+    end
+end
+RLsourcescat = categorical(RLsources);
+typs = {"SFgen, StructPlus flows", "SFgen, Random flows", "SFgen, Structured flows","Tgen, normal distances", "Tgen, tilted distances", "QAPLIB instances"};
+
+drawSources(model.pilot.Z, RLsourcescat, cmap, typs);
+title('Real-Like Instances')
+print(gcf,'-dpng',[outputdir 'init_reallike.png']);
+print(gcf,'-depsc',[outputdir 'init_reallike.eps']);
+
+%manhattan plot
+MHsources = repmat([""], length(supp.subsource), 1);
+for i = 1:length(MHsources)
+    if startsWith(supp.subsource{i},"manhat-gen-SF-plu")
+        MHsources(i) = "SFgen, StructPlus flows";
+    elseif startsWith(supp.subsource{i},"manhat-gen-SF-ran")
+        MHsources(i) = "SFgen, Random flows";
+    elseif startsWith(supp.subsource{i},"manhat-gen-SF-str")
+        MHsources(i) = "SFgen, Structured flows";
+    elseif startsWith(supp.subsource{i},"manhat-qaplib")
+        MHsources(i) = "QAPLIB instances";
+    else
+        MHsources(i) = "";
+    end
+end
+MHsourcescat = categorical(MHsources);
+typs = {"SFgen, StructPlus flows", "SFgen, Random flows", "SFgen, Structured flows", "QAPLIB instances"};
+
+drawSources(model.pilot.Z, MHsourcescat, cmap, typs);
+title('Instances with Manhattan grid distances')
+print(gcf,'-dpng',[outputdir 'init_manhat.png']);
+print(gcf,'-depsc',[outputdir 'init_manhat.eps']);
+
+%other2 plot
+O1sources = repmat([""], length(supp.subsource), 1);
+for i = 1:length(O1sources)
+    if startsWith(supp.subsource{i},"terminal-gen")
+        O1sources(i) = "Terminal";
+    elseif startsWith(supp.subsource{i},"hypercube-gen")
+        O1sources(i) = "Hypercube";
+    elseif startsWith(supp.subsource{i},"other-gen-palubeckis")
+        O1sources(i) = "Palubeckis";
+    elseif startsWith(supp.subsource{i},"qapsat-gen-easy")
+        O1sources(i) = "QAPSAT, easy";
+    elseif startsWith(supp.subsource{i},"qapsat-gen-hard")
+        O1sources(i) = "QAPSAT, hard";
+    else
+        O1sources(i) = "";
+    end
+end
+O1sourcescat = categorical(O1sources);
+typs = {"Terminal", "Hypercube", "Palubeckis", "QAPSAT, easy", "QAPSAT, hard"};
+
+drawSources(model.pilot.Z, O1sourcescat, cmap, typs);
+title('Other generated instances')
+print(gcf,'-dpng',[outputdir 'init_other1.png']);
+print(gcf,'-depsc',[outputdir 'init_other1.eps']);
+
+%other2 plot
+O2sources = repmat([""], length(supp.subsource), 1);
+for i = 1:length(O2sources)
+    if startsWith(supp.subsource{i},"other-drezner")
+        O2sources(i) = "Dre** generator";
+    elseif startsWith(supp.subsource{i},"other-qaplib-chr")
+        O2sources(i) = "QAPLIB, chr instances";
+    elseif startsWith(supp.subsource{i},"other-qaplib-lipa")
+        O2sources(i) = "QAPLIB, lipa instances";
+    elseif startsWith(supp.subsource{i},"other-qaplib-taic")
+        O2sources(i) = "QAPLIB, taic instance";
+    else
+        O2sources(i) = "";
+    end
+end
+O2sourcescat = categorical(O2sources);
+typs = {"Dre** generator", "QAPLIB, chr instances", "QAPLIB, lipa instances", "QAPLIB, taic instance"};
+
+drawSources(model.pilot.Z, O2sourcescat, cmap, typs);
+title('Other benchmark instances')
+print(gcf,'-dpng',[outputdir 'init_other2.png']);
+print(gcf,'-depsc',[outputdir 'init_other2.eps']);
+
+% algorithm performance plots
+diffYraw = model.data.Yraw(:,2) - model.data.Yraw(:,1);
+
+[h1, h2, h3] = drawScatterYraw(model.pilot.Z, diffYraw, "Actual Algorithm Performance", cmap);
+legend([h1,h2,h3], ["BMA stronger", "Similar performance", "MMAS stronger"], 'Location', 'SouthOutside', 'NumColumns', 3);
+print(gcf,'-dpng',[outputdir 'init_realperf.png']);
+print(gcf,'-depsc',[outputdir 'init_realperf.eps']);
+
+% feature plots
+Xaux = (model.data.X-min(model.data.X,[],1))./range(model.data.X,1);
+for i=1:nfeats
+    clf;
+    drawScatter(model.pilot.Z, Xaux(:,i),...
+                strrep(model.data.featlabels{i},'_',' '), cmap);
+    % line(model.cloist.Zedge(:,1), model.cloist.Zedge(:,2), 'LineStyle', '-', 'Color', 'r');
+    print(gcf,'-dpng',[outputdir 'init_feature_' model.data.featlabels{i} '.png']);
+    print(gcf,'-depsc',[outputdir 'init_feature_' model.data.featlabels{i} '.eps']);
+end
+
+
+if false
+
 %figure
 clf
 %set(gcf, 'Position',  [0, 100, 800, 800])
 %drawSubSources(model.pilot.Z, subS, model.data.S, rootdir);
 print(gcf,'-depsc',[rootdir 'subsource.eps']);
+
 
 clf
 drawArrow = @(x,y,varargin) quiver( x(1),y(1),x(2)-x(1),y(2)-y(1),0, varargin{:} );
@@ -93,7 +251,7 @@ legend("BMA","MMAS");
 print(gcf,'-dpng',[rootdir 'Pr0hat_prediction.png']);
 hold off
 
-
+end
 
 
 function handle = drawSubSources(Z, subS, supS, rootdir)
