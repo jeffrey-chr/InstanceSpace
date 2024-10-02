@@ -99,3 +99,26 @@ drawSources(pfcZ, fcsourcescat, cmap, typs);
 title('New Flow-Cluster Instances')
 print(gcf,'-dpng',[outputdir 'iniplus_flowcluster.png']);
 print(gcf,'-depsc',[outputdir 'iniplus_flowcluster.eps']);
+
+% recomb plot
+
+% flowcluster plot
+
+pfcZ = [model.pilot.Z; rcfeatZ];
+subs = [supp.subsource; recombsupptable.subsource];
+
+rcsources = repmat([""], length(subs), 1);
+for i = 1:length(rcsources)
+    if startsWith(subs{i},"recomb")
+        rcsources(i) = "Recombined";
+    else
+        rcsources(i) = "";
+    end
+end
+rcsourcescat = categorical(rcsources);
+typs = {"Recombined"};
+
+drawSources(pfcZ, rcsourcescat, cmap, typs);
+title('New Recombined Instances')
+print(gcf,'-dpng',[outputdir 'iniplus_recomb.png']);
+print(gcf,'-depsc',[outputdir 'iniplus_recomb.eps']);

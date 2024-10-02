@@ -1,7 +1,7 @@
 % Create plots of intitial space 
 clear;
 
-rootdir = '..\QAPdata\';
+rootdir = '..\QAPdata_combined\';
 model = load([rootdir 'model.mat']);
 suppfile = [rootdir 'suppdata.csv'];
 supp = readtable(suppfile);
@@ -9,7 +9,7 @@ supplabels = supp.Properties.VariableNames;
 issubsource = strcmpi(supplabels,'subsource');
 subS = categorical(supp{:,issubsource});
 
-outputdir = '.\output\';
+outputdir = '.\output_extisa\';
 
 nfeats = length(model.data.featlabels);
 

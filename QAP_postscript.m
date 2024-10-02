@@ -1,6 +1,6 @@
 % Create supplemental plots like the sub-sources plots.
 
-rootdir = '.\QAPdata_expanded\';
+rootdir = '.\QAPdata_combined\';
 model = load([rootdir 'model.mat']);
 suppfile = [rootdir 'suppdata.csv'];
 supp = readtable(suppfile);

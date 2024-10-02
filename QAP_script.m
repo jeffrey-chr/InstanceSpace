@@ -2,7 +2,8 @@
 
 clear
 
-rootdir = './QAPdata/';
+%rootdir = './QAPdata/';
+rootdir = './QAPdata/'
 %rootdir = './QAPdata_without_BLS/';
 
 if false
