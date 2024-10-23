@@ -24,6 +24,24 @@ subs = supp.subsource;
 
 % source plots
 
+% qaplib plot
+qsources = repmat([""], length(supp.subsource), 1);
+for i = 1:length(qsources)
+    if contains(supp.subsource{i},"qaplib")
+        qsources(i) = "QAPLIB instances";
+    else
+        qsources(i) = "";
+    end
+end
+qsourcescat = categorical(qsources);
+typs = {"QAPLIB instances"};
+
+drawSources(model.pilot.Z, qsourcescat, cmap, typs);
+title('QAPLIB Instances')
+print(gcf,'-dpng',[outputdir 'extisa_qaplib.png']);
+print(gcf,'-depsc',[outputdir 'extisa_qaplib.eps']);
+
+
 % category plot
 bigsources = repmat([""], length(supp.subsource), 1);
 for i = 1:length(bigsources)
