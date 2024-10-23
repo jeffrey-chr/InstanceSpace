@@ -70,10 +70,13 @@ for i=nsources:-1:1
 end
 hold off
 xlabel('z_{1}'); ylabel('z_{2}'); title('Sources');
-legend(handle2, sourcelabels, 'Location', 'SouthOutside', 'NumColumns', ceil(nsources/3));
+leg = legend(handle2, sourcelabels, 'Location', 'SouthOutside', 'NumColumns', min(ceil(nsources/3),2));
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
-axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
+axis square; axis([lbound(1)-0.5 ubound(1)+0.5 lbound(2)-0.5 ubound(2)+0.5]);
+% cpos = leg.Position;
+% leg.set("Position", [(1 - cpos(3))/2, 0.01, cpos(3), cpos(4)]);
+% gca().set("Position", gca().Position + [0.03 0.06 -0.06 -0.06]);
 
 end
 % =========================================================================
@@ -128,7 +131,7 @@ colorbar('EastOutside');
 
 end
 % =========================================================================
-function drawPortfolioSelections(Z, P, algolabels, titlelabel)
+function drawPortfolioSelections(Z, P, algolabels, titlelabel, cmap)
 
 ubound = ceil(max(Z));
 lbound = floor(min(Z));
@@ -136,16 +139,21 @@ nalgos = length(algolabels);
 algolbls = cell(1,nalgos+1);
 h = zeros(1,nalgos+1);
 isworthy = sum(bsxfun(@eq, P, 0:nalgos))~=0;
-clr = flipud(lines(nalgos+1));
+clr = cmap(nalgos+1);
+clr = clr([2,1,3:nalgos+1],:);
+markers = ['o',repmat('o',1,nalgos)];
+clf
+hold on
+%clr = flipud(lines(nalgos+1));
 for i=0:nalgos
-    if ~isworthy(i+1)
-        continue;
+    if isworthy(i+1)
+        scatter(Z(P==i,1), Z(P==i,2), 8, clr(i+1,:), 'filled', markers(i+1))
+        % line(Z(P==i,1), Z(P==i,2), 'LineStyle', 'none', ...
+        %                            'Marker', markers(i+1), ...
+        %                            'Color', clr(i+1,:), ...
+        %                            'MarkerFaceColor', clr(i+1,:), ...
+        %                            'MarkerSize', 4);
     end
-    line(Z(P==i,1), Z(P==i,2), 'LineStyle', 'none', ...
-                               'Marker', '.', ...
-                               'Color', clr(i+1,:), ...
-                               'MarkerFaceColor', clr(i+1,:), ...
-                               'MarkerSize', 4);
     h(i+1) = patch([0 0],[0 0], clr(i+1,:), 'EdgeColor','none');
     if i==0
         algolbls{i+1} = 'None';
@@ -153,8 +161,11 @@ for i=0:nalgos
         algolbls{i+1} = strrep(algolabels{i},'_',' ');
     end
 end
+hold off
+%colormap(gcf,cmap());
 xlabel('z_{1}'); ylabel('z_{2}'); title(titlelabel);
-legend(h(isworthy), algolbls(isworthy), 'Location', 'NorthEastOutside');
+%legend(h(isworthy), algolbls(isworthy), 'Location', 'NorthEastOutside');
+legend(h, algolbls, 'Location', 'NorthEastOutside');
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
 axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
@@ -243,29 +254,34 @@ hold off;
 
 end
 % =========================================================================
-function h = drawBinaryPerformance(Z, Ybin, titlelabel)
+function h = drawBinaryPerformance(Z, Ybin, titlelabel, cmap)
 
 ubound = ceil(max(Z));
 lbound = floor(min(Z));
-orange = [1.0 0.6471 0.0];
-blue = [0.0 0.0 1.0];
+%orange = [1.0 0.6471 0.0];
+%blue = [0.0 0.0 1.0];
 lbls = {'GOOD','BAD'};
 h = zeros(1,2);
+
+clrs = cmap(2);
+orange = clrs(2,:);
+blue = clrs(1,:);
+
 if any(~Ybin)
     h(2) = patch([0 0],[0 0], orange, 'EdgeColor','none');
     line(Z(~Ybin,1), Z(~Ybin,2), 'LineStyle', 'none', ...
-                                 'Marker', '.', ...
+                                 'Marker', 'o', ...
                                  'Color', orange, ...
                                  'MarkerFaceColor', orange, ...
-                                 'MarkerSize', 4);
+                                 'MarkerSize', 2);
 end
 if any(Ybin)
     h(1) = patch([0 0],[0 0], blue, 'EdgeColor','none');
     line(Z(Ybin,1), Z(Ybin,2), 'LineStyle', 'none', ...
-                               'Marker', '.', ...
+                               'Marker', 'o', ...
                                'Color', blue, ...
                                'MarkerFaceColor', blue, ...
-                               'MarkerSize', 4);
+                               'MarkerSize', 2);
 end
 xlabel('z_{1}'); ylabel('z_{2}'); title(titlelabel);
 legend(h(h~=0), lbls(h~=0), 'Location', 'NorthEastOutside');

@@ -28,13 +28,13 @@ for i = 1:length(bigsources)
     if startsWith(supp.subsource{i},"real-")
         bigsources(i) = "Real data";
     elseif startsWith(supp.subsource{i},"reallike-")
-        bigsources(i) = "Real-like instance";
+        bigsources(i) = "Real-like";
     elseif startsWith(supp.subsource{i},"manhat-")
-        bigsources(i) = "Grid-based distances";
+        bigsources(i) = "Grid-based";
     elseif startsWith(supp.subsource{i},"random-")
-        bigsources(i) = "Uniform random data";
+        bigsources(i) = "Uniform random";
     else
-        bigsources(i) = "Other instances";
+        bigsources(i) = "Other";
     end
 end
 bigsourcescat = categorical(bigsources);
@@ -48,23 +48,23 @@ print(gcf,'-depsc',[outputdir 'init_sources.eps']);
 RLsources = repmat([""], length(supp.subsource), 1);
 for i = 1:length(RLsources)
     if startsWith(supp.subsource{i},"reallike-SF-euc-plu")
-        RLsources(i) = "SFgen, StructPlus flows";
+        RLsources(i) = "SFgen, Struct+";
     elseif startsWith(supp.subsource{i},"reallike-SF-euc-ran")
-        RLsources(i) = "SFgen, Random flows";
+        RLsources(i) = "SFgen, Random";
     elseif startsWith(supp.subsource{i},"reallike-SF-euc-str")
-        RLsources(i) = "SFgen, Structured flows";
+        RLsources(i) = "SFgen, Struct";
     elseif startsWith(supp.subsource{i},"reallike-gen-taiBN")
-        RLsources(i) = "Tgen, normal distances";
+        RLsources(i) = "Taigen, Normal";
     elseif startsWith(supp.subsource{i},"reallike-gen-taiBT")
-        RLsources(i) = "Tgen, tilted distances";
+        RLsources(i) = "Taigen, Tilt";
     elseif startsWith(supp.subsource{i},"reallike-qaplib")
-        RLsources(i) = "QAPLIB instances";
+        RLsources(i) = "tai*b (QAPLIB)";
     else
         RLsources(i) = "";
     end
 end
 RLsourcescat = categorical(RLsources);
-typs = {"SFgen, StructPlus flows", "SFgen, Random flows", "SFgen, Structured flows","Tgen, normal distances", "Tgen, tilted distances", "QAPLIB instances"};
+typs = {"SFgen, Struct+", "SFgen, Random", "SFgen, Struct","Tgen, Normal", "Tgen, Tilt", "tai*b (QAPLIB)"};
 
 drawSources(model.pilot.Z, RLsourcescat, cmap, typs);
 title('Real-Like Instances')
@@ -75,19 +75,19 @@ print(gcf,'-depsc',[outputdir 'init_reallike.eps']);
 MHsources = repmat([""], length(supp.subsource), 1);
 for i = 1:length(MHsources)
     if startsWith(supp.subsource{i},"manhat-gen-SF-plu")
-        MHsources(i) = "SFgen, StructPlus flows";
+        MHsources(i) = "SFgen, Struct+";
     elseif startsWith(supp.subsource{i},"manhat-gen-SF-ran")
-        MHsources(i) = "SFgen, Random flows";
+        MHsources(i) = "SFgen, Random";
     elseif startsWith(supp.subsource{i},"manhat-gen-SF-str")
-        MHsources(i) = "SFgen, Structured flows";
+        MHsources(i) = "SFgen, Struct";
     elseif startsWith(supp.subsource{i},"manhat-qaplib")
-        MHsources(i) = "QAPLIB instances";
+        MHsources(i) = "QAPLIB";
     else
         MHsources(i) = "";
     end
 end
 MHsourcescat = categorical(MHsources);
-typs = {"SFgen, StructPlus flows", "SFgen, Random flows", "SFgen, Structured flows", "QAPLIB instances"};
+typs = {"SFgen, Struct+", "SFgen, Random", "SFgen, Struct", "QAPLIB"};
 
 drawSources(model.pilot.Z, MHsourcescat, cmap, typs);
 title('Instances with Manhattan grid distances')
@@ -123,19 +123,19 @@ print(gcf,'-depsc',[outputdir 'init_other1.eps']);
 O2sources = repmat([""], length(supp.subsource), 1);
 for i = 1:length(O2sources)
     if startsWith(supp.subsource{i},"other-drezner")
-        O2sources(i) = "Dre** generator";
+        O2sources(i) = "DreXX";
     elseif startsWith(supp.subsource{i},"other-qaplib-chr")
-        O2sources(i) = "QAPLIB, chr instances";
+        O2sources(i) = "chr* (QAPLIB)";
     elseif startsWith(supp.subsource{i},"other-qaplib-lipa")
-        O2sources(i) = "QAPLIB, lipa instances";
+        O2sources(i) = "lipa* (QAPLIB)";
     elseif startsWith(supp.subsource{i},"other-qaplib-taic")
-        O2sources(i) = "QAPLIB, taic instance";
+        O2sources(i) = "tai64c (QAPLIB)";
     else
         O2sources(i) = "";
     end
 end
 O2sourcescat = categorical(O2sources);
-typs = {"Dre** generator", "QAPLIB, chr instances", "QAPLIB, lipa instances", "QAPLIB, taic instance"};
+typs = {"DreXX", "chr* (QAPLIB)", "lipa* (QAPLIB)", "tai64c (QAPLIB)"};
 
 drawSources(model.pilot.Z, O2sourcescat, cmap, typs);
 title('Other benchmark instances')
@@ -146,20 +146,16 @@ print(gcf,'-depsc',[outputdir 'init_other2.eps']);
 diffYraw = model.data.Yraw(:,2) - model.data.Yraw(:,1);
 
 [h1, h2, h3] = drawScatterYraw(model.pilot.Z, diffYraw, "Actual Algorithm Performance", cmap);
-legend([h1,h2,h3], ["BMA stronger", "Similar performance", "MMAS stronger"], 'Location', 'SouthOutside', 'NumColumns', 3);
+perfleg = legend([h1,h2,h3], ["BMA stronger", "Similar performance", "MMAS stronger"], 'Location', 'SouthOutside', 'NumColumns', 3);
+cpos = perfleg.Position;
+perfleg.set("Position", [(1 - cpos(3))/2, 0.01, cpos(3), cpos(4)]);
+gca().set("Position", gca().Position + [0.02 0.04 -0.04 -0.04]);
 print(gcf,'-dpng',[outputdir 'init_realperf.png']);
 print(gcf,'-depsc',[outputdir 'init_realperf.eps']);
 
-% SVM plots
-hold off
-clf
-drawBinaryPerformance(model.pilot.Z, model.pythia.Yhat(:,1), "SVM prediction of BMA performance")
-print(gcf,'-dpng',[outputdir 'init_svm_bma.png']);
-print(gcf,'-depsc',[outputdir 'init_svm_bma.eps']);
-clf
-drawBinaryPerformance(model.pilot.Z, model.pythia.Yhat(:,2), "SVM prediction of MMAS performance")
-print(gcf,'-dpng',[outputdir 'init_svm_mmas.png']);
-print(gcf,'-depsc',[outputdir 'init_svm_mmas.eps']);
+close all
+f = gcf;
+f.Position = [50 750 800 600];
 
 % feature plots
 Xaux = (model.data.X-min(model.data.X,[],1))./range(model.data.X,1);
@@ -172,6 +168,64 @@ for i=1:nfeats
     print(gcf,'-depsc',[outputdir 'init_feature_' model.data.featlabels{i} '.eps']);
 end
 
+% SVM plots
+hold off
+clf
+drawBinaryPerformance(model.pilot.Z, model.pythia.Yhat(:,1), "SVM prediction of BMA performance", cmap)
+print(gcf,'-dpng',[outputdir 'init_svm_bma.png']);
+print(gcf,'-depsc',[outputdir 'init_svm_bma.eps']);
+clf
+drawBinaryPerformance(model.pilot.Z, model.pythia.Yhat(:,2), "SVM prediction of MMAS performance", cmap)
+print(gcf,'-dpng',[outputdir 'init_svm_mmas.png']);
+print(gcf,'-depsc',[outputdir 'init_svm_mmas.eps']);
+
+%default SVM prediction
+clf
+drawPortfolioSelections(model.pilot.Z, model.pythia.selection0, model.data.algolabels, "Combined SVM prediction based on global precision", cmap)
+print(gcf,'-dpng',[outputdir 'init_svm_combined1.png']);
+print(gcf,'-depsc',[outputdir 'init_svm_combined1.eps']);
+
+%improved SVM prediction
+lineqns = zeros(2,size(model.data.Yraw,2));
+for i = 1:size(model.data.Yraw,2)
+    clf
+    Ydata = model.data.Yraw(:,i);
+    Pr0hat = model.pythia.Pr0hat(:,i);
+    X = [ones(size(Pr0hat,1),1),Pr0hat];
+    Leq = X \ Ydata;
+    %pred = Leq(1) + Leq(2)*Yraw;
+    scatter(Pr0hat, Ydata)
+    hold on
+    fplot(@(x) Leq(1) + Leq(2)*x, [min(Pr0hat),max(Pr0hat)]);
+    xlabel("Pr0hat from SVM")
+    ylabel(strcat("Performance of ", model.data.algolabels{i}));
+    title("Linear Regression Relation between Pr0hat and Performance")
+    hold off
+    print(gcf,'-dpng',[rootdir model.data.algolabels{i} '_linreg.png']);
+
+    lineqns(1,i) = Leq(1);
+    lineqns(2,i) = Leq(2);
+end
+
+clf
+proj_perform = model.pythia.Pr0hat .* lineqns(2,:) + lineqns(1,:);
+[~, idx] = min(proj_perform,[],2);
+% hold on
+% Z = model.pilot.Z;
+% colors = cmap(2);
+% for i = 1:size(model.data.Yraw,2)
+%     choice(:,i) = (idx == i);
+%     color = [0 0 0]; % this is a hack but im in a hurry
+%     color(i) = 1;
+%     %color = color * [1 0 0; 0 0 1]';
+%     scatter(Z(choice(:,i),1), Z(choice(:,i),2),20,'MarkerEdgeColor',color,'MarkerFaceColor',color);
+% end
+drawPortfolioSelections(model.pilot.Z, idx, model.data.algolabels, "Combined SVM prediction based on local confidence", cmap)
+title("Combined SVM prediction based on local confidence");
+%legend("BMA","MMAS");
+print(gcf,'-dpng',[outputdir 'init_svm_combined2.png']);
+print(gcf,'-depsc',[outputdir 'init_svm_combined2.eps']);
+hold off
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -246,23 +300,6 @@ for i = 1:size(model.data.Yraw,2)
     lineqns(1,i) = Leq(1);
     lineqns(2,i) = Leq(2);
 end
-
-clf
-proj_perform = model.pythia.Pr0hat .* lineqns(2,:) + lineqns(1,:);
-[~, idx] = min(proj_perform,[],2);
-hold on
-Z = model.pilot.Z;
-for i = 1:size(model.data.Yraw,2)
-    choice(:,i) = (idx == i);
-    color = [0 0 0]; % this is a hack but im in a hurry
-    color(i) = 1;
-    color = color * [1 0 0; 0 0 1; 0 1 0];
-    scatter(Z(choice(:,i),1), Z(choice(:,i),2),20,'MarkerEdgeColor',color,'MarkerFaceColor',color);
-end
-title("Pr0hat informed prediction of best alg");
-legend("BMA","MMAS");
-print(gcf,'-dpng',[rootdir 'Pr0hat_prediction.png']);
-hold off
 
 end
 

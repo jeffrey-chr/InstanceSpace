@@ -93,10 +93,10 @@ for i = 1:length(fcsources)
     end
 end
 fcsourcescat = categorical(fcsources);
-typs = {"Hypercube x 3-cycle", "Hypercube x Tree", "Hypercube x Square","Drexx x 3-cycle", "Drexx x Tree", "Drexx x Square"};
+typs = {"Hcube x 3-cycle", "Hcube x Tree", "Hcube x Square","Drexx x 3-cycle", "Drexx x Tree", "Drexx x Square"};
 
 drawSources(pfcZ, fcsourcescat, cmap, typs);
-title('New Flow-Cluster Instances')
+title('Flow-Cluster Instances')
 print(gcf,'-dpng',[outputdir 'iniplus_flowcluster.png']);
 print(gcf,'-depsc',[outputdir 'iniplus_flowcluster.eps']);
 

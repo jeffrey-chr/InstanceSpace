@@ -20,6 +20,8 @@ cmap = @copper;
 
 alteredscriptfcn
 
+subs = supp.subsource;
+
 % source plots
 
 % category plot
@@ -28,11 +30,15 @@ for i = 1:length(bigsources)
     if startsWith(supp.subsource{i},"real-")
         bigsources(i) = "Real data";
     elseif startsWith(supp.subsource{i},"reallike-")
-        bigsources(i) = "Real-like instance";
+        bigsources(i) = "Real-like inst.";
     elseif startsWith(supp.subsource{i},"manhat-")
-        bigsources(i) = "Grid-based distances";
+        bigsources(i) = "Grid-based dist.";
     elseif startsWith(supp.subsource{i},"random-")
-        bigsources(i) = "Uniform random data";
+        bigsources(i) = "Uniform random";
+    elseif startsWith(supp.subsource{i},"recombined-")
+        bigsources(i) = "Hybrid instances";
+    elseif startsWith(supp.subsource{i}, "flowcluster-")
+        bigsources(i) = "Flowcluster inst.";
     else
         bigsources(i) = "Other instances";
     end
@@ -41,8 +47,62 @@ bigsourcescat = categorical(bigsources);
 
 drawSources(model.pilot.Z, bigsourcescat, cmap);
 title('Instance Categories')
-print(gcf,'-dpng',[outputdir 'init_sources.png']);
-print(gcf,'-depsc',[outputdir 'init_sources.eps']);
+print(gcf,'-dpng',[outputdir 'extone_sources.png']);
+print(gcf,'-depsc',[outputdir 'extone_sources.eps']);
+
+% flow cluster
+fcsources = repmat([""], length(subs), 1);
+for i = 1:length(fcsources)
+    if startsWith(subs{i},"flowcluster-dhyper-fcycle")
+        fcsources(i) = "Hcube x 3-cycle";
+    elseif startsWith(subs{i},"flowcluster-dhyper-ftree")
+        fcsources(i) = "Hcube x Tree";
+    elseif startsWith(subs{i},"flowcluster-dhyper-fsquare")
+        fcsources(i) = "Hcube x Square";
+    elseif startsWith(subs{i},"flowcluster-ddrez-fcycle")
+        fcsources(i) = "Drexx x 3-cycle";
+    elseif startsWith(subs{i},"flowcluster-ddrez-ftree")
+        fcsources(i) = "Drexx x Tree";
+    elseif startsWith(subs{i},"flowcluster-ddrez-fsquare")
+        fcsources(i) = "Drexx x Square";
+    else
+        fcsources(i) = "";
+    end
+end
+fcsourcescat = categorical(fcsources);
+typs = {"Hcube x 3-cycle", "Hcube x Tree", "Hcube x Square","Drexx x 3-cycle", "Drexx x Tree", "Drexx x Square"};
+%typs = typs(1:2:5,2:4:6);
+
+drawSources(model.pilot.Z, fcsourcescat, cmap, typs);
+title('Flow-Cluster Instances')
+print(gcf,'-dpng',[outputdir 'extone_flowcluster.png']);
+print(gcf,'-depsc',[outputdir 'extone_flowcluster.eps']);
+
+% specific plot
+spec1sources = repmat([""], length(supp.subsource), 1);
+for i = 1:length(spec1sources)
+    if startsWith(supp.subsource{i},"other-gen-palubeckis")
+        spec1sources(i) = "Palubeckis";
+    elseif startsWith(supp.subsource{i},"terminal-gen")
+        spec1sources(i) = "Terminal";
+    elseif startsWith(supp.subsource{i},"hypercube")
+        spec1sources(i) = "Hypercube";
+    elseif startsWith(supp.subsource{i},"qapsat-gen")
+        spec1sources(i) = "QAPSAT";
+    elseif startsWith(supp.subsource{i},"other-drezner")
+        spec1sources(i) = "DreXX";
+    else
+        spec1sources(i) = "";
+    end
+end
+spec1sourcescat = categorical(spec1sources);
+typs = {"Palubeckis", "Terminal", "Hypercube","QAPSAT", "DreXX"};
+
+drawSources(model.pilot.Z, spec1sourcescat, cmap, typs);
+title('Specific sub-classes')
+print(gcf,'-dpng',[outputdir 'extone_specific.png']);
+print(gcf,'-depsc',[outputdir 'extone_specific.eps']);
+
 
 % reallike plot
 RLsources = repmat([""], length(supp.subsource), 1);
@@ -68,8 +128,8 @@ typs = {"SFgen, StructPlus flows", "SFgen, Random flows", "SFgen, Structured flo
 
 drawSources(model.pilot.Z, RLsourcescat, cmap, typs);
 title('Real-Like Instances')
-print(gcf,'-dpng',[outputdir 'init_reallike.png']);
-print(gcf,'-depsc',[outputdir 'init_reallike.eps']);
+print(gcf,'-dpng',[outputdir 'extone_reallike.png']);
+print(gcf,'-depsc',[outputdir 'extone_reallike.eps']);
 
 %manhattan plot
 MHsources = repmat([""], length(supp.subsource), 1);
@@ -91,8 +151,8 @@ typs = {"SFgen, StructPlus flows", "SFgen, Random flows", "SFgen, Structured flo
 
 drawSources(model.pilot.Z, MHsourcescat, cmap, typs);
 title('Instances with Manhattan grid distances')
-print(gcf,'-dpng',[outputdir 'init_manhat.png']);
-print(gcf,'-depsc',[outputdir 'init_manhat.eps']);
+print(gcf,'-dpng',[outputdir 'extone_manhat.png']);
+print(gcf,'-depsc',[outputdir 'extone_manhat.eps']);
 
 %other1 plot
 O1sources = repmat([""], length(supp.subsource), 1);
@@ -116,50 +176,50 @@ typs = {"Terminal", "Hypercube", "Palubeckis", "QAPSAT, easy", "QAPSAT, hard"};
 
 drawSources(model.pilot.Z, O1sourcescat, cmap, typs);
 title('Other generated instances')
-print(gcf,'-dpng',[outputdir 'init_other1.png']);
-print(gcf,'-depsc',[outputdir 'init_other1.eps']);
+print(gcf,'-dpng',[outputdir 'extone_other1.png']);
+print(gcf,'-depsc',[outputdir 'extone_other1.eps']);
 
 %other2 plot
 O2sources = repmat([""], length(supp.subsource), 1);
 for i = 1:length(O2sources)
     if startsWith(supp.subsource{i},"other-drezner")
-        O2sources(i) = "Dre** generator";
+        O2sources(i) = "DreXX";
     elseif startsWith(supp.subsource{i},"other-qaplib-chr")
-        O2sources(i) = "QAPLIB, chr instances";
+        O2sources(i) = "chr* (QAPLIB)";
     elseif startsWith(supp.subsource{i},"other-qaplib-lipa")
-        O2sources(i) = "QAPLIB, lipa instances";
+        O2sources(i) = "lipa* (QAPLIB)";
     elseif startsWith(supp.subsource{i},"other-qaplib-taic")
-        O2sources(i) = "QAPLIB, taic instance";
+        O2sources(i) = "tai64c (QAPLIB)";
     else
         O2sources(i) = "";
     end
 end
 O2sourcescat = categorical(O2sources);
-typs = {"Dre** generator", "QAPLIB, chr instances", "QAPLIB, lipa instances", "QAPLIB, taic instance"};
+typs = {"DreXX", "chr* (QAPLIB)", "lipa* (QAPLIB)", "tai64c (QAPLIB)"};
 
 drawSources(model.pilot.Z, O2sourcescat, cmap, typs);
 title('Other benchmark instances')
-print(gcf,'-dpng',[outputdir 'init_other2.png']);
-print(gcf,'-depsc',[outputdir 'init_other2.eps']);
+print(gcf,'-dpng',[outputdir 'extone_other2.png']);
+print(gcf,'-depsc',[outputdir 'extone_other2.eps']);
 
 % algorithm performance plots
 diffYraw = model.data.Yraw(:,2) - model.data.Yraw(:,1);
 
 [h1, h2, h3] = drawScatterYraw(model.pilot.Z, diffYraw, "Actual Algorithm Performance", cmap);
 legend([h1,h2,h3], ["BMA stronger", "Similar performance", "MMAS stronger"], 'Location', 'SouthOutside', 'NumColumns', 3);
-print(gcf,'-dpng',[outputdir 'init_realperf.png']);
-print(gcf,'-depsc',[outputdir 'init_realperf.eps']);
+print(gcf,'-dpng',[outputdir 'extone_realperf.png']);
+print(gcf,'-depsc',[outputdir 'extone_realperf.eps']);
 
 % SVM plots
 hold off
 clf
 drawBinaryPerformance(model.pilot.Z, model.pythia.Yhat(:,1), "SVM prediction of BMA performance")
-print(gcf,'-dpng',[outputdir 'init_svm_bma.png']);
-print(gcf,'-depsc',[outputdir 'init_svm_bma.eps']);
+print(gcf,'-dpng',[outputdir 'extone_svm_bma.png']);
+print(gcf,'-depsc',[outputdir 'extone_svm_bma.eps']);
 clf
 drawBinaryPerformance(model.pilot.Z, model.pythia.Yhat(:,2), "SVM prediction of MMAS performance")
-print(gcf,'-dpng',[outputdir 'init_svm_mmas.png']);
-print(gcf,'-depsc',[outputdir 'init_svm_mmas.eps']);
+print(gcf,'-dpng',[outputdir 'extone_svm_mmas.png']);
+print(gcf,'-depsc',[outputdir 'extone_svm_mmas.eps']);
 
 % feature plots
 Xaux = (model.data.X-min(model.data.X,[],1))./range(model.data.X,1);
@@ -168,8 +228,8 @@ for i=1:nfeats
     drawScatter(model.pilot.Z, Xaux(:,i),...
                 strrep(model.data.featlabels{i},'_',' '), cmap);
     % line(model.cloist.Zedge(:,1), model.cloist.Zedge(:,2), 'LineStyle', '-', 'Color', 'r');
-    print(gcf,'-dpng',[outputdir 'init_feature_' model.data.featlabels{i} '.png']);
-    print(gcf,'-depsc',[outputdir 'init_feature_' model.data.featlabels{i} '.eps']);
+    print(gcf,'-dpng',[outputdir 'extone_feature_' model.data.featlabels{i} '.png']);
+    print(gcf,'-depsc',[outputdir 'extone_feature_' model.data.featlabels{i} '.eps']);
 end
 
 
