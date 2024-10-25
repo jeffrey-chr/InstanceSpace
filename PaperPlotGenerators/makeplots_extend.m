@@ -1,7 +1,7 @@
 clear;
 
 f = gcf;
-f.Position = [50 750 800 600];
+f.Position = [50 50 800 600];
 
 cmap = @copper;
 
@@ -77,11 +77,11 @@ subs = [supp.subsource; fcsupptable.subsource];
 fcsources = repmat([""], length(subs), 1);
 for i = 1:length(fcsources)
     if startsWith(subs{i},"flowcluster-dhyper-fcycle")
-        fcsources(i) = "Hypercube x 3-cycle";
+        fcsources(i) = "Hcube x 3-cycle";
     elseif startsWith(subs{i},"flowcluster-dhyper-ftree")
-        fcsources(i) = "Hypercube x Tree";
+        fcsources(i) = "Hcube x Tree";
     elseif startsWith(subs{i},"flowcluster-dhyper-fsquare")
-        fcsources(i) = "Hypercube x Square";
+        fcsources(i) = "Hcube x Square";
     elseif startsWith(subs{i},"flowcluster-ddrez-fcycle")
         fcsources(i) = "Drexx x 3-cycle";
     elseif startsWith(subs{i},"flowcluster-ddrez-ftree")
@@ -110,15 +110,15 @@ subs = [supp.subsource; recombsupptable.subsource];
 rcsources = repmat([""], length(subs), 1);
 for i = 1:length(rcsources)
     if startsWith(subs{i},"recomb")
-        rcsources(i) = "Recombined";
+        rcsources(i) = "Hybrid";
     else
         rcsources(i) = "";
     end
 end
 rcsourcescat = categorical(rcsources);
-typs = {"Recombined"};
+typs = {"Hybrid"};
 
 drawSources(pfcZ, rcsourcescat, cmap, typs);
-title('New Recombined Instances')
+title('New Hybrid Instances')
 print(gcf,'-dpng',[outputdir 'iniplus_recomb.png']);
 print(gcf,'-depsc',[outputdir 'iniplus_recomb.eps']);

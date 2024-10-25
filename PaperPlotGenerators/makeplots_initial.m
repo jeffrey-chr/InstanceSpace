@@ -14,7 +14,8 @@ outputdir = '.\output\';
 nfeats = length(model.data.featlabels);
 
 f = gcf;
-f.Position = [50 750 800 600];
+goodpos = [50 50 800 600];
+f.Position = goodpos;
 
 cmap = @copper;
 
@@ -172,7 +173,7 @@ print(gcf,'-depsc',[outputdir 'init_realperf.eps']);
 
 close all
 f = gcf;
-f.Position = [50 750 800 600];
+f.Position = goodpos;
 
 % feature plots
 Xaux = (model.data.X-min(model.data.X,[],1))./range(model.data.X,1);

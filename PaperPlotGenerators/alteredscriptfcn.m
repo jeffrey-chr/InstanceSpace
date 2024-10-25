@@ -140,7 +140,7 @@ algolbls = cell(1,nalgos+1);
 h = zeros(1,nalgos+1);
 isworthy = sum(bsxfun(@eq, P, 0:nalgos))~=0;
 clr = cmap(nalgos+1);
-clr = clr([2,1,3:nalgos+1],:);
+clr = clr([2,3,1,4:nalgos+1],:);
 markers = ['o',repmat('o',1,nalgos)];
 clf
 hold on
@@ -164,8 +164,8 @@ end
 hold off
 %colormap(gcf,cmap());
 xlabel('z_{1}'); ylabel('z_{2}'); title(titlelabel);
-%legend(h(isworthy), algolbls(isworthy), 'Location', 'NorthEastOutside');
-legend(h, algolbls, 'Location', 'NorthEastOutside');
+legend(h(isworthy), algolbls(isworthy), 'Location', 'NorthEastOutside');
+%legend(h, algolbls, 'Location', 'NorthEastOutside');
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
 axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
