@@ -122,3 +122,46 @@ drawSources(pfcZ, rcsourcescat, cmap, typs);
 title('New Hybrid Instances')
 print(gcf,'-dpng',[outputdir 'iniplus_recomb.png']);
 print(gcf,'-depsc',[outputdir 'iniplus_recomb.eps']);
+
+
+rc2sources = repmat([""], length(subs), 1);
+for i = 1:length(rc2sources)
+    if startsWith(subs{i},"recombined-ddrez")
+        rc2sources(i) = "DreXX";
+    elseif startsWith(subs{i},"recombined-deucl")
+        rc2sources(i) = "Euclidean";
+    elseif startsWith(subs{i},"recombined-dhypr")
+        rc2sources(i) = "Hypercube";
+    elseif startsWith(subs{i},"recombined-dmanh")
+        rc2sources(i) = "Manhattan";
+    elseif startsWith(subs{i},"recombined-dpalu")
+        rc2sources(i) = "Palubeckis";
+    elseif startsWith(subs{i},"recombined-drand")
+        rc2sources(i) = "Random";
+    elseif startsWith(subs{i},"recombined-dterm")
+        rc2sources(i) = "Terminal";
+    else
+        rc2sources(i) = "";
+    end
+end
+rc2sourcescat = categorical(rc2sources);
+typs = {"DreXX", "Euclidean", "Hypercube", "Manhattan", "Palubeckis", "Random", "Terminal"};
+
+drawSources(pfcZ, rc2sourcescat, cmap, typs);
+title('New Hybrid Instances')
+print(gcf,'-dpng',[outputdir 'iniplus_hybrid2.png']);
+print(gcf,'-depsc',[outputdir 'iniplus_hybrid2.eps']);
+
+Y = [model.data.Yraw; recombalg];
+fltr = (size(model.data.Yraw,1)+1):size(Y,1);
+
+% algorithm performance plots
+diffYraw = Y(:,2) - Y(:,1);
+
+[h1, h2, h3] = drawScatterYrawSubset(pfcZ, diffYraw, fltr, "Hybrid Instance Algorithm Performance", cmap);
+perfleg = legend([h1,h2,h3], ["BMA stronger", "Similar performance", "MMAS stronger"], 'Location', 'SouthOutside', 'NumColumns', 3);
+cpos = perfleg.Position;
+perfleg.set("Position", [(1 - cpos(3))/2, 0.01, cpos(3), cpos(4)]);
+gca().set("Position", gca().Position + [0.02 0.04 -0.04 -0.04]);
+print(gcf,'-dpng',[outputdir 'iniplus_hybridperf.png']);
+print(gcf,'-depsc',[outputdir 'iniplus_hybridperf.eps']);

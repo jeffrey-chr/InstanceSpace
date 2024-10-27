@@ -203,6 +203,22 @@ drawPortfolioSelections(model.pilot.Z, model.pythia.selection0, model.data.algol
 print(gcf,'-dpng',[outputdir 'init_svm_combined1.png']);
 print(gcf,'-depsc',[outputdir 'init_svm_combined1.eps']);
 
+basicgood = 0;
+basicbest = 0;
+for i = 1:size(model.pythia.selection0, 1)
+    s = model.pythia.selection0(i);
+    if (s > 0)
+        if (model.data.Ybin(i,s) == 1)
+            basicgood = basicgood + 1;
+        end
+        chosen = model.data.Yraw(i,s);
+        notchosen = model.data.Yraw(i,3-s);
+        if (chosen <= notchosen)
+            basicbest = basicbest+1;
+        end
+    end
+end
+
 %improved SVM prediction
 lineqns = zeros(2,size(model.data.Yraw,2));
 for i = 1:size(model.data.Yraw,2)
@@ -238,6 +254,27 @@ proj_perform = model.pythia.Pr0hat .* lineqns(2,:) + lineqns(1,:);
 %     %color = color * [1 0 0; 0 0 1]';
 %     scatter(Z(choice(:,i),1), Z(choice(:,i),2),20,'MarkerEdgeColor',color,'MarkerFaceColor',color);
 % end
+
+newgood = 0;
+newbest = 0;
+for i = 1:size(model.pythia.selection0, 1)
+    s = idx(i);
+    if (s > 0)
+        if (model.data.Ybin(i,s) == 1)
+            newgood = newgood + 1;
+        end
+        chosen = model.data.Yraw(i,s);
+        notchosen = model.data.Yraw(i,3-s);
+        if (chosen <= notchosen)
+            newbest = newbest+1;
+        end
+    end
+end
+basicgood = basicgood / size(model.pythia.selection0, 1);
+basicbest = basicbest / size(model.pythia.selection0, 1);
+newgood = newgood / size(model.pythia.selection0, 1);
+newbest = newbest / size(model.pythia.selection0, 1);
+
 drawPortfolioSelections(model.pilot.Z, idx, model.data.algolabels, "Combined SVM prediction based on local confidence", cmap)
 title("Combined SVM prediction based on local confidence");
 %legend("BMA","MMAS");

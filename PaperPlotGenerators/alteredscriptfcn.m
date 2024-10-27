@@ -30,6 +30,7 @@ assignin('caller','drawSources',@drawSources);
 assignin('caller','drawScatter',@drawScatter);
 assignin('caller','drawScatterInfer',@drawScatterInfer);
 assignin('caller','drawScatterYraw',@drawScatterYraw);
+assignin('caller','drawScatterYrawSubset',@drawScatterYrawSubset);
 assignin('caller','drawPortfolioSelections',@drawPortfolioSelections);
 assignin('caller','drawPortfolioFootprint',@drawPortfolioFootprint);
 assignin('caller','drawGoodBadFootprint',@drawGoodBadFootprint);
@@ -104,6 +105,31 @@ other = (X >= -1) & (X <= 1);
 colormap(gcf,cmap());
 handle2 = scatter(Z(other,1), Z(other,2), 10, X(other), 'filled', 'o');
 hold on
+handle1 = scatter(Z(geqone,1), Z(geqone,2), 20, X(geqone), '^');
+handle3 = scatter(Z(leqnone,1), Z(leqnone,2), 20, X(leqnone), 'v');
+hold off
+clim([min(X),max(X)])
+xlabel('z_{1}'); ylabel('z_{2}'); title(titlelabel);
+set(findall(gcf,'-property','FontSize'),'FontSize',12);
+set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
+axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
+colorbar('EastOutside');
+
+end
+
+function [handle1, handle2, handle3, handle4] = drawScatterYrawSubset(Z, X, subset, titlelabel, cmap)
+ubound = ceil(max(Z));
+lbound = floor(min(Z));
+fltr = zeros(length(X),1);
+fltr(subset) = 1;
+
+geqone = (X >= 1) & fltr;
+leqnone = (X <= -1) & fltr;
+other = (X >= -1) & (X <= 1) & fltr;
+colormap(gcf,cmap());
+handle4 = scatter(Z(~fltr,1), Z(~fltr,2), 10, [0.83 0.83 0.83], 'filled', 'o');
+hold on
+handle2 = scatter(Z(other,1), Z(other,2), 10, X(other), 'filled', 'o');
 handle1 = scatter(Z(geqone,1), Z(geqone,2), 20, X(geqone), '^');
 handle3 = scatter(Z(leqnone,1), Z(leqnone,2), 20, X(leqnone), 'v');
 hold off
