@@ -177,11 +177,13 @@ f.Position = goodpos;
 
 % feature plots
 Xaux = (model.data.X-min(model.data.X,[],1))./range(model.data.X,1);
+longfeat = {'Distance Sparsity', "Distance Triangle Ineq. Sat.", "Distance Betafit Alpha", "Distance Near Similarity", "Cumulative Integral", "Average Distance to Optima"};
 for i=1:nfeats
     clf;
     drawScatter(model.pilot.Z, Xaux(:,i),...
                 strrep(model.data.featlabels{i},'_',' '), cmap);
     % line(model.cloist.Zedge(:,1), model.cloist.Zedge(:,2), 'LineStyle', '-', 'Color', 'r');
+    title(longfeat(i));
     print(gcf,'-dpng',[outputdir 'init_feature_' model.data.featlabels{i} '.png']);
     print(gcf,'-depsc',[outputdir 'init_feature_' model.data.featlabels{i} '.eps']);
 end

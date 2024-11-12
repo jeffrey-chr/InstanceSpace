@@ -13,6 +13,8 @@ outputdir = '.\output_extisa\';
 
 nfeats = length(model.data.featlabels);
 
+target = [-1, -1];
+
 %target = [1, -2];
 %type = "Hypercube";
 %type = "Terminal";
@@ -29,8 +31,11 @@ nfeats = length(model.data.featlabels);
 %target = [1,0];
 %type = "Other";
 
-target = [3,0];
-type = "FlowCluster";
+%target = [-0.32, -0.75];
+%type = "RealLifeLike";
+
+%target = [3,0];
+%type = "FlowCluster";
 
 %target = [-2,-2];
 %type = "RandomUniform";
@@ -51,7 +56,8 @@ type = "FlowCluster";
 %hyp64_3, hypercube in bottom right
 %term45_9, terminal in bottom right
 
-cand = find(model.data.S == type);
+%cand = find(model.data.S == type);
+cand = 1:length(model.data.S);
 
 names = model.data.instlabels(cand);
 points = model.pilot.Z(cand,:);

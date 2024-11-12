@@ -96,6 +96,36 @@ title('Flow-Cluster Instances')
 print(gcf,'-dpng',[outputdir 'extone_flowcluster.png']);
 print(gcf,'-depsc',[outputdir 'extone_flowcluster.eps']);
 
+% hybrid
+hybsources = repmat([""], length(subs), 1);
+for i = 1:length(fcsources)
+    if startsWith(subs{i},"recombined-ddrez")
+        hybsources(i) = "DreXX";
+    elseif startsWith(subs{i},"recombined-deucl")
+        hybsources(i) = "Euclidean";
+    elseif startsWith(subs{i},"recombined-dhypr")
+        hybsources(i) = "Hypercube";
+    elseif startsWith(subs{i},"recombined-dmanh")
+        hybsources(i) = "Manhattan";
+    elseif startsWith(subs{i},"recombined-dpalu")
+        hybsources(i) = "Palubeckis";
+    elseif startsWith(subs{i},"recombined-drand")
+        hybsources(i) = "Random";
+    elseif startsWith(subs{i},"recombined-dterm")
+        hybsources(i) = "Terminal";
+    else
+        hybsources(i) = "";
+    end
+end
+hybsourcescat = categorical(hybsources);
+typs = {"DreXX", "Euclidean", "Hypercube", "Manhattan", "Palubeckis", "Random", "Terminal"};
+%typs = typs(1:2:5,2:4:6);
+
+drawSources(model.pilot.Z, hybsourcescat, cmap, typs);
+title('Hybrid Instances')
+print(gcf,'-dpng',[outputdir 'extone_hybrid.png']);
+print(gcf,'-depsc',[outputdir 'extone_hybrid.eps']);
+
 % specific plot
 spec1sources = repmat([""], length(supp.subsource), 1);
 for i = 1:length(spec1sources)
@@ -231,21 +261,23 @@ print(gcf,'-depsc',[outputdir 'extone_realperf.eps']);
 % SVM plots
 hold off
 clf
-drawBinaryPerformance(model.pilot.Z, model.pythia.Yhat(:,1), "SVM prediction of BMA performance")
+drawBinaryPerformance(model.pilot.Z, model.pythia.Yhat(:,1), "SVM prediction of BMA performance", cmap)
 print(gcf,'-dpng',[outputdir 'extone_svm_bma.png']);
 print(gcf,'-depsc',[outputdir 'extone_svm_bma.eps']);
 clf
-drawBinaryPerformance(model.pilot.Z, model.pythia.Yhat(:,2), "SVM prediction of MMAS performance")
+drawBinaryPerformance(model.pilot.Z, model.pythia.Yhat(:,2), "SVM prediction of MMAS performance", cmap)
 print(gcf,'-dpng',[outputdir 'extone_svm_mmas.png']);
 print(gcf,'-depsc',[outputdir 'extone_svm_mmas.eps']);
 
 % feature plots
 Xaux = (model.data.X-min(model.data.X,[],1))./range(model.data.X,1);
+longfeat = {'Distance Normalised Mean', "Flow Normalised Mean", "Distance Sparsity", "Flow Dominance", "Distance Skewness", "Gilmore Lawler Bound", "Escape Probability"};
 for i=1:nfeats
     clf;
     drawScatter(model.pilot.Z, Xaux(:,i),...
                 strrep(model.data.featlabels{i},'_',' '), cmap);
     % line(model.cloist.Zedge(:,1), model.cloist.Zedge(:,2), 'LineStyle', '-', 'Color', 'r');
+    title(longfeat{i});
     print(gcf,'-dpng',[outputdir 'extone_feature_' model.data.featlabels{i} '.png']);
     print(gcf,'-depsc',[outputdir 'extone_feature_' model.data.featlabels{i} '.eps']);
 end
