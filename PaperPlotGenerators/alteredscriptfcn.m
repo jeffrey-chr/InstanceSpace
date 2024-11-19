@@ -52,10 +52,17 @@ nsources = length(sourcelabels);
 clrs = flipud(cmap(nsources));
 clrs = [clrs(1:2:nsources,:); clrs(2:2:nsources,:)];
 handle = zeros(nsources,1);
-markertypes = [repmat('o', 1, length(1:2:nsources)), repmat('x', 1, length(2:2:nsources))];
-markersizes = [repmat(20, 1, length(1:2:nsources)), repmat(20, 1, length(2:2:nsources))];
+markertmp1 = repmat('os', 1, nsources);
+markertmp2 = repmat('xd', 1, nsources);
+sizetmp1 = repmat([20 20], 1, nsources);
+sizetmp2 = repmat([20 20], 1, nsources);
+%sizetmp = repmat([20,20,20,20], 1, nsources);
+markertypes = [markertmp1(1:ceil(nsources/2)), markertmp2(1:floor(nsources/2))];
+markersizes = [sizetmp1(1:ceil(nsources/2)), sizetmp2(1:floor(nsources/2))];
+%markertypes = [repmat('o', 1, length(1:2:nsources)), repmat('x', 1, length(2:2:nsources))];
+%markersizes = [repmat(20, 1, length(1:2:nsources)), repmat(20, 1, length(2:2:nsources))];
 handle2 = zeros(nsources, 1);
-handle3 = scatter(Z(isundefined(S),1), Z(isundefined(S),2), 5, [0.83 0.83 0.83], 'o', 'filled');
+handle3 = scatter(Z(isundefined(S),1), Z(isundefined(S),2), 5, [0.94 0.94 0.94], 'o', 'filled');
 hold on
 for i=nsources:-1:1
     % line(Z(S==sourcelabels{i},1), ...
@@ -127,7 +134,7 @@ geqone = (X >= 1) & fltr;
 leqnone = (X <= -1) & fltr;
 other = (X >= -1) & (X <= 1) & fltr;
 colormap(gcf,cmap());
-handle4 = scatter(Z(~fltr,1), Z(~fltr,2), 10, [0.83 0.83 0.83], 'filled', 'o');
+handle4 = scatter(Z(~fltr,1), Z(~fltr,2), 10, [0.94 0.94 0.94], 'filled', 'o');
 hold on
 handle2 = scatter(Z(other,1), Z(other,2), 10, X(other), 'filled', 'o');
 handle1 = scatter(Z(geqone,1), Z(geqone,2), 20, X(geqone), '^');

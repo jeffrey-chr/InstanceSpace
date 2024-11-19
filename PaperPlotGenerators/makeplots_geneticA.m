@@ -44,9 +44,9 @@ nfeats = length(model.data.featlabels);
 %hyp64_3, hypercube in bottom right
 %term45_9, terminal in bottom right
 
-truenames = ["stf60es2", "sko72", "xran70A1", "term75_4", "stf60er1", "dre72", "hyp64_3" ];
-bangnames = ["stf60es2", "sko72", "xran70A1", "term75!4", "stf60er1", "dre72", "hyp64!3" ];
-undernames = ["stf60es2", "sko72", "xran70A1", "term75-4", "stf60er1", "dre72", "hyp64-3" ];
+truenames = ["stf60es2", "sko72", "xran70A1", "term75_4", "stf60er1", "dre72", "stf100ep3", "hyp64_3" ];
+bangnames = ["stf60es2", "sko72", "xran70A1", "term75!4", "stf60er1", "dre72", "stf100ep3", "hyp64!3" ];
+undernames = ["stf60es2", "sko72", "xran70A1", "term75-4", "stf60er1", "dre72", "stf100ep3", "hyp64-3" ];
 
 sko72 = find(contains(model.data.instlabels,'sko72'));
 hyp64 = find(contains(model.data.instlabels,'hyp64_3'));
@@ -54,10 +54,11 @@ stf60s = find(contains(model.data.instlabels,'stf60es2'));
 stf60r = find(contains(model.data.instlabels,'stf60er1'));
 dre72 = find(contains(model.data.instlabels,'dre72'));
 term75 = find(contains(model.data.instlabels,'term75_4'));
+stf100p = find(contains(model.data.instlabels,'stf100ep3'));
 %lipa70b = find(contains(model.data.instlabels,'lipa70b'));
 xran70A1 = find(contains(model.data.instlabels,'xran70A1'));
 
-sources = [stf60s;sko72;xran70A1;term75;stf60r;dre72;hyp64];
+sources = [stf60s;sko72;xran70A1;term75;stf60r;dre72;stf100p;hyp64];
 
 sourcepoints = [model.pilot.Z(sources,:)];
 
@@ -154,9 +155,9 @@ for p = 1:nplots
 
     figure(p)
     f = gcf;
-    f.Position = [50 750 800 600];
+    f.Position = [50 50 800 600];
         
-    scatter(model.pilot.Z(:,1), model.pilot.Z(:,2), 10, [0.83 0.83 0.83], 'filled');
+    scatter(model.pilot.Z(:,1), model.pilot.Z(:,2), 10, [0.94 0.94 0.94], 'filled');
     hold on
 
     for k = 1:size(targets,1)

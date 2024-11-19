@@ -82,7 +82,7 @@ for i = 1:length(RLsources)
     end
 end
 RLsourcescat = categorical(RLsources);
-typs = {"SFgen, Struct+", "SFgen, Random", "SFgen, Struct","Tgen, Normal", "Tgen, Tilt", "tai*b (QAPLIB)"};
+typs = {"SFgen, Struct+", "SFgen, Random", "SFgen, Struct","Taigen, Normal", "Taigen, Tilt", "tai*b (QAPLIB)"};
 
 drawSources(model.pilot.Z, RLsourcescat, cmap, typs);
 title('Real-Like Instances')

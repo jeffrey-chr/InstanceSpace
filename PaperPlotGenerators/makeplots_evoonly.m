@@ -75,12 +75,14 @@ for i = 1:length(fcsources)
         fcsources(i) = "sko72";
     elseif startsWith(subs{i},"EvolvedFlow-term75!4")
         fcsources(i) = "term75-4";
+    elseif startsWith(subs{i},"EvolvedFlow-stf100ep3")
+        fcsources(i) = "stf100ep3";
     else
         fcsources(i) = "";
     end
 end
 fcsourcescat = categorical(fcsources);
-typs = {"stf60er1", "stf60es2", "hyp64-3","xran70A1", "dre72", "sko72", "term75-4"};
+typs = {"stf60er1", "stf60es2", "hyp64-3","xran70A1", "dre72", "sko72", "term75-4", "stf100ep3"};
 
 drawSources(pfcZ, fcsourcescat, cmap, typs);
 title('New Evolved Instances')
@@ -94,7 +96,7 @@ diffYraw = pfcY(:,2) - pfcY(:,1);
 clf
 
 hold on
-scatter(pfcZ(~eligible,1), pfcZ(~eligible,2), 5, [0.83 0.83 0.83], 'o', 'filled');
+scatter(pfcZ(~eligible,1), pfcZ(~eligible,2), 5, [0.87 0.87 0.87], 'o', 'filled');
 [h1, h2, h3] = drawScatterYraw(pfcZ(eligible,:), diffYraw(eligible,:), "Actual Algorithm Performance", cmap);
 perfleg = legend([h1,h2,h3], ["BMA stronger", "Similar performance", "MMAS stronger"], 'Location', 'southoutside', 'NumColumns', 3);
 cpos = perfleg.Position;
