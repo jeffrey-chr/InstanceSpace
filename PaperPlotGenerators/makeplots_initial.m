@@ -24,19 +24,24 @@ alteredscriptfcn
 % source plots
 
 % qaplib plot
-qsources = repmat([""], length(supp.subsource), 1);
-for i = 1:length(qsources)
+qsources = repmat([""], length(supp.subsource) + size(model.cloist.Zecorr,1), 1);
+for i = 1:length(supp.subsource)
     if contains(supp.subsource{i},"qaplib")
         qsources(i) = "QAPLIB instances";
     else
         qsources(i) = "";
     end
 end
+for i = 1:size(model.cloist.Zecorr,1);
+    qsources(length(supp.subsource) + i) = "Inferred boundary";
+end
 qsourcescat = categorical(qsources);
-typs = {"QAPLIB instances"};
+typs = {"QAPLIB instances","Inferred boundary"};
 
-drawSources(model.pilot.Z, qsourcescat, cmap, typs);
-title('QAPLIB Instances')
+tmpZ = [model.pilot.Z; model.cloist.Zecorr];
+
+drawSources(tmpZ, qsourcescat, cmap, typs);
+title('QAPLIB Instances and Instance Space Boundary')
 print(gcf,'-dpng',[outputdir 'init_qaplib.png']);
 print(gcf,'-depsc',[outputdir 'init_qaplib.eps']);
 

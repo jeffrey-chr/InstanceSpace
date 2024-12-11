@@ -199,6 +199,8 @@ for p = 1:nplots
         
     hold off
 
+    title("Evolved instances")
+
     print(gcf,'-dpng',strcat(outputdir,'evoonly_spider_',num2str(p),'.png'));
     print(gcf,'-depsc',strcat(outputdir,'evoonly_spider_',num2str(p),'.eps'));
 

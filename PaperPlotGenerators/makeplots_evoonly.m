@@ -3,7 +3,7 @@ clear;
 close all
 
 f = gcf;
-f.Position = [50 750 800 600];
+f.Position = [50 50 800 600];
 
 cmap = @copper;
 
