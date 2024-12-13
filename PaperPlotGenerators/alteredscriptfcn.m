@@ -49,7 +49,8 @@ if nargin < 4
     sourcelabels = cellstr(unique(S));
 end
 nsources = length(sourcelabels);
-clrs = flipud(cmap(nsources));
+clrs = flipud(cmap(nsources+1));
+clrs = clrs(2:end,:);
 clrs = [clrs(1:2:nsources,:); clrs(2:2:nsources,:)];
 handle = zeros(nsources,1);
 markertmp1 = repmat('os', 1, nsources);
@@ -178,22 +179,28 @@ nalgos = length(algolabels);
 algolbls = cell(1,nalgos+1);
 h = zeros(1,nalgos+1);
 isworthy = sum(bsxfun(@eq, P, 0:nalgos))~=0;
-clr = cmap(nalgos+1);
-clr = clr([2,3,1,4:nalgos+1],:);
-markers = ['o',repmat('o',1,nalgos)];
+clr = cmap(9);
+%clr = clr([2,3,1,4:nalgos+1],:);
+clr = clr([5,8,1],:);
+markers = ['p',repmat('o',1,nalgos)];
 clf
 hold on
 %clr = flipud(lines(nalgos+1));
 for i=0:nalgos
+    h(i+1) = patch([0 0],[0 0], clr(i+1,:), 'EdgeColor','none');
     if isworthy(i+1)
-        scatter(Z(P==i,1), Z(P==i,2), 8, clr(i+1,:), 'filled', markers(i+1))
+        foo = 8;
+        if i == 0
+            foo = 60;
+        end
+
+        h(i+1) = scatter(Z(P==i,1), Z(P==i,2), foo, clr(i+1,:), 'filled', markers(i+1));
         % line(Z(P==i,1), Z(P==i,2), 'LineStyle', 'none', ...
         %                            'Marker', markers(i+1), ...
         %                            'Color', clr(i+1,:), ...
         %                            'MarkerFaceColor', clr(i+1,:), ...
         %                            'MarkerSize', 4);
     end
-    h(i+1) = patch([0 0],[0 0], clr(i+1,:), 'EdgeColor','none');
     if i==0
         algolbls{i+1} = 'None';
     else
@@ -203,7 +210,7 @@ end
 hold off
 %colormap(gcf,cmap());
 xlabel('z_{1}'); ylabel('z_{2}'); title(titlelabel);
-legend(h(isworthy), algolbls(isworthy), 'Location', 'NorthEastOutside');
+legend(h(isworthy), algolbls(isworthy), 'Location', 'SouthOutside', 'NumColumns', 3);
 %legend(h, algolbls, 'Location', 'NorthEastOutside');
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
@@ -308,8 +315,8 @@ lbound = floor(min(Z));
 lbls = {'GOOD','BAD'};
 h = zeros(1,2);
 
-clrs = cmap(2);
-orange = clrs(2,:);
+clrs = cmap(5);
+orange = clrs(4,:);
 blue = clrs(1,:);
 
 if any(~Ybin)
@@ -329,7 +336,7 @@ if any(Ybin)
                                'MarkerSize', 2);
 end
 xlabel('z_{1}'); ylabel('z_{2}'); title(titlelabel);
-legend(h(h~=0), lbls(h~=0), 'Location', 'NorthEastOutside');
+legend(h(h~=0), lbls(h~=0), 'Location', 'SouthOutside', 'NumColumns', 2);
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
 ubound = ceil(max(Z));

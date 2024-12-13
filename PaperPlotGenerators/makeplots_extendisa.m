@@ -14,7 +14,8 @@ outputdir = '.\output_extisa\';
 nfeats = length(model.data.featlabels);
 
 f = gcf;
-f.Position = [400 400 800 600];
+goodpos = [50 50 800 600];
+f.Position = goodpos;
 
 cmap = @copper;
 
@@ -127,8 +128,8 @@ print(gcf,'-dpng',[outputdir 'extone_hybrid.png']);
 print(gcf,'-depsc',[outputdir 'extone_hybrid.eps']);
 
 % specific plot
-spec1sources = repmat([""], length(supp.subsource), 1);
-for i = 1:length(spec1sources)
+spec1sources = repmat([""], length(supp.subsource) + size(model.cloist.Zecorr,1), 1);
+for i = 1:length(supp.subsource)
     if startsWith(supp.subsource{i},"other-gen-palubeckis")
         spec1sources(i) = "Palubeckis";
     elseif startsWith(supp.subsource{i},"terminal-gen")
@@ -143,11 +144,16 @@ for i = 1:length(spec1sources)
         spec1sources(i) = "";
     end
 end
+for i = 1:size(model.cloist.Zecorr,1)
+    spec1sources(length(supp.subsource) + i) = "Boundary";
+end
 spec1sourcescat = categorical(spec1sources);
-typs = {"Palubeckis", "Terminal", "Hypercube","QAPSAT", "DreXX"};
+typs = {"Palubeckis", "Terminal", "Hypercube","QAPSAT", "DreXX", "Boundary"};
 
-drawSources(model.pilot.Z, spec1sourcescat, cmap, typs);
-title('Selected sub-classes')
+tmpZ = [model.pilot.Z; model.cloist.Zecorr];
+
+drawSources(tmpZ, spec1sourcescat, cmap, typs);
+title('Selected sub-classes and boundary')
 print(gcf,'-dpng',[outputdir 'extone_specific.png']);
 print(gcf,'-depsc',[outputdir 'extone_specific.eps']);
 

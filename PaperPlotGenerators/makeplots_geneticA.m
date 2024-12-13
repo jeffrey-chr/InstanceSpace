@@ -168,7 +168,8 @@ for p = 1:nplots
     nhere = min(nperplot, length(sourcepoints)-start);
 
     cmap = @copper;
-    clrs = flipud(cmap(nhere));
+    clrs = flipud(cmap(nhere+1));
+    clrs = clrs(2:end,:);
     clrs = [clrs(1:2:nhere,:); clrs(2:2:nhere,:)];
 
     hand = [];

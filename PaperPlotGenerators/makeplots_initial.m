@@ -32,7 +32,7 @@ for i = 1:length(supp.subsource)
         qsources(i) = "";
     end
 end
-for i = 1:size(model.cloist.Zecorr,1);
+for i = 1:size(model.cloist.Zecorr,1)
     qsources(length(supp.subsource) + i) = "Inferred boundary";
 end
 qsourcescat = categorical(qsources);
