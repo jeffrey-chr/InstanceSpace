@@ -77,13 +77,13 @@ subs = [supp.subsource; fcsupptable.subsource];
 fcsources = repmat([""], length(subs), 1);
 for i = 1:length(fcsources)
     if startsWith(subs{i},"flowcluster-dhyper-fcycle")
-        fcsources(i) = "Hcube x 3-cycle";
+        fcsources(i) = "Hcube x Triangle";
     elseif startsWith(subs{i},"flowcluster-dhyper-ftree")
         fcsources(i) = "Hcube x Tree";
     elseif startsWith(subs{i},"flowcluster-dhyper-fsquare")
         fcsources(i) = "Hcube x Square";
     elseif startsWith(subs{i},"flowcluster-ddrez-fcycle")
-        fcsources(i) = "Drexx x 3-cycle";
+        fcsources(i) = "Drexx x Triangle";
     elseif startsWith(subs{i},"flowcluster-ddrez-ftree")
         fcsources(i) = "Drexx x Tree";
     elseif startsWith(subs{i},"flowcluster-ddrez-fsquare")
@@ -93,7 +93,7 @@ for i = 1:length(fcsources)
     end
 end
 fcsourcescat = categorical(fcsources);
-typs = {"Hcube x 3-cycle", "Hcube x Tree", "Hcube x Square","Drexx x 3-cycle", "Drexx x Tree", "Drexx x Square"};
+typs = {"Hcube x Triangle", "Hcube x Tree", "Hcube x Square","Drexx x Triangle", "Drexx x Tree", "Drexx x Square"};
 
 drawSources(pfcZ, fcsourcescat, cmap, typs);
 title('Flow-Cluster Instances')

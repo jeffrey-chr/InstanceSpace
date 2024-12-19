@@ -81,7 +81,9 @@ xlabel('z_{1}'); ylabel('z_{2}'); title('Sources');
 leg = legend(handle2, sourcelabels, 'Location', 'SouthOutside', 'NumColumns', min(ceil(nsources/3),2));
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
-axis square; axis([lbound(1)-0.5 ubound(1)+0.5 lbound(2)-0.5 ubound(2)+0.5]);
+ubound = ceil(max(Z));
+lbound = floor(min(Z));
+axis square; axis([lbound(1) ubound(1) lbound(2) ubound(2)]);
 % cpos = leg.Position;
 % leg.set("Position", [(1 - cpos(3))/2, 0.01, cpos(3), cpos(4)]);
 % gca().set("Position", gca().Position + [0.03 0.06 -0.06 -0.06]);
@@ -104,8 +106,6 @@ colorbar('EastOutside');
 end
 
 function [handle1, handle2, handle3] = drawScatterYraw(Z, X, titlelabel, cmap)
-ubound = ceil(max(Z));
-lbound = floor(min(Z));
 geqone = X >= 1;
 leqnone = X <= -1;
 other = (X >= -1) & (X <= 1);
@@ -119,7 +119,9 @@ clim([min(X),max(X)])
 xlabel('z_{1}'); ylabel('z_{2}'); title(titlelabel);
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
-axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
+ubound = ceil(max(Z));
+lbound = floor(min(Z));
+axis square; axis([lbound(1) ubound(1) lbound(2) ubound(2)]);
 colorbar('EastOutside');
 
 end
@@ -144,7 +146,9 @@ clim([min(X),max(X)])
 xlabel('z_{1}'); ylabel('z_{2}'); title(titlelabel);
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
-axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
+ubound = ceil(max(Z));
+lbound = floor(min(Z));
+axis square; axis([lbound(1) ubound(1) lbound(2) ubound(2)]);
 colorbar('EastOutside');
 
 end
@@ -159,7 +163,9 @@ clim([0,1])
 xlabel('z_{1}'); ylabel('z_{2}'); title(titlelabel);
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
-axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
+ubound = ceil(max(Z));
+lbound = floor(min(Z));
+axis square; axis([lbound(1) ubound(1) lbound(2) ubound(2)]);
 colorbar('EastOutside');
 
 end
@@ -201,7 +207,9 @@ legend(h(isworthy), algolbls(isworthy), 'Location', 'NorthEastOutside');
 %legend(h, algolbls, 'Location', 'NorthEastOutside');
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
-axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
+ubound = ceil(max(Z));
+lbound = floor(min(Z));
+axis square; axis([lbound(1) ubound(1) lbound(2) ubound(2)]);
 
 end
 % =========================================================================
@@ -236,7 +244,9 @@ xlabel('z_{1}'); ylabel('z_{2}'); title('Portfolio footprints');
 legend(h(isworthy), algolbls(isworthy), 'Location', 'NorthEastOutside');
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
-axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
+ubound = ceil(max(Z));
+lbound = floor(min(Z));
+axis square; axis([lbound(1) ubound(1) lbound(2) ubound(2)]);
 
 end
 % =========================================================================
@@ -270,7 +280,9 @@ xlabel('z_{1}'); ylabel('z_{2}'); title([titlelabel ' Footprints']);
 legend(h(h~=0), lbls(h~=0), 'Location', 'NorthEastOutside');
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
-axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
+ubound = ceil(max(Z));
+lbound = floor(min(Z));
+axis square; axis([lbound(1) ubound(1) lbound(2) ubound(2)]);
 
 end
 % =========================================================================
@@ -320,7 +332,9 @@ xlabel('z_{1}'); ylabel('z_{2}'); title(titlelabel);
 legend(h(h~=0), lbls(h~=0), 'Location', 'NorthEastOutside');
 set(findall(gcf,'-property','FontSize'),'FontSize',12);
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
-axis square; axis([lbound(1)-1 ubound(1)+1 lbound(2)-1 ubound(2)+1]);
+ubound = ceil(max(Z));
+lbound = floor(min(Z));
+axis square; axis([lbound(1) ubound(1) lbound(2) ubound(2)]);
 
 end
 % =========================================================================

@@ -14,7 +14,7 @@ outputdir = '.\output_extisa\';
 nfeats = length(model.data.featlabels);
 
 f = gcf;
-f.Position = [50 50 800 600];
+f.Position = [400 400 800 600];
 
 cmap = @copper;
 
@@ -48,15 +48,15 @@ for i = 1:length(bigsources)
     if startsWith(supp.subsource{i},"real-")
         bigsources(i) = "Real data";
     elseif startsWith(supp.subsource{i},"reallike-")
-        bigsources(i) = "Real-like inst.";
+        bigsources(i) = "Real-like.";
     elseif startsWith(supp.subsource{i},"manhat-")
-        bigsources(i) = "Grid-based dist.";
+        bigsources(i) = "Grid-based";
     elseif startsWith(supp.subsource{i},"random-")
         bigsources(i) = "Uniform random";
     elseif startsWith(supp.subsource{i},"recombined-")
-        bigsources(i) = "Hybrid instances";
+        bigsources(i) = "Hybrid";
     elseif startsWith(supp.subsource{i}, "flowcluster-")
-        bigsources(i) = "Flowcluster inst.";
+        bigsources(i) = "Flowcluster";
     else
         bigsources(i) = "Other instances";
     end
@@ -72,13 +72,13 @@ print(gcf,'-depsc',[outputdir 'extone_sources.eps']);
 fcsources = repmat([""], length(subs), 1);
 for i = 1:length(fcsources)
     if startsWith(subs{i},"flowcluster-dhyper-fcycle")
-        fcsources(i) = "Hcube x 3-cycle";
+        fcsources(i) = "Hcube x Triangle";
     elseif startsWith(subs{i},"flowcluster-dhyper-ftree")
         fcsources(i) = "Hcube x Tree";
     elseif startsWith(subs{i},"flowcluster-dhyper-fsquare")
         fcsources(i) = "Hcube x Square";
     elseif startsWith(subs{i},"flowcluster-ddrez-fcycle")
-        fcsources(i) = "Drexx x 3-cycle";
+        fcsources(i) = "Drexx x Triangle";
     elseif startsWith(subs{i},"flowcluster-ddrez-ftree")
         fcsources(i) = "Drexx x Tree";
     elseif startsWith(subs{i},"flowcluster-ddrez-fsquare")
@@ -88,7 +88,7 @@ for i = 1:length(fcsources)
     end
 end
 fcsourcescat = categorical(fcsources);
-typs = {"Hcube x 3-cycle", "Hcube x Tree", "Hcube x Square","Drexx x 3-cycle", "Drexx x Tree", "Drexx x Square"};
+typs = {"Hcube x Triangle", "Hcube x Tree", "Hcube x Square","Drexx x Triangle", "Drexx x Tree", "Drexx x Square"};
 %typs = typs(1:2:5,2:4:6);
 
 drawSources(model.pilot.Z, fcsourcescat, cmap, typs);
@@ -147,7 +147,7 @@ spec1sourcescat = categorical(spec1sources);
 typs = {"Palubeckis", "Terminal", "Hypercube","QAPSAT", "DreXX"};
 
 drawSources(model.pilot.Z, spec1sourcescat, cmap, typs);
-title('Specific sub-classes')
+title('Selected sub-classes')
 print(gcf,'-dpng',[outputdir 'extone_specific.png']);
 print(gcf,'-depsc',[outputdir 'extone_specific.eps']);
 

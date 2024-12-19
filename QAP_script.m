@@ -3,8 +3,8 @@
 clear
 
 %rootdir = './QAPdata/';
-%rootdir = './QAPdata/'
-rootdir = './scalingfix/base/'
+rootdir = './QAPdata/'
+%rootdir = './scalingfix/base/'
 %rootdir = './QAPdata_without_BLS/';
 
 if false

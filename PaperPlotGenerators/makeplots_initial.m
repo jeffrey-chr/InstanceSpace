@@ -177,7 +177,7 @@ f.Position = goodpos;
 
 % feature plots
 Xaux = (model.data.X-min(model.data.X,[],1))./range(model.data.X,1);
-longfeat = {'Distance Sparsity', "Distance Triangle Ineq. Sat.", "Distance Betafit Alpha", "Distance Near Similarity", "Cumulative Integral", "Average Distance to Optima"};
+longfeat = {'Distance Sparsity', "Distance Triangle Ineq. Sat.", "Distance Betafit Alpha", "Distance Near Similarity", "Distribution Similarity", "Average Distance to Optima"};
 for i=1:nfeats
     clf;
     drawScatter(model.pilot.Z, Xaux(:,i),...

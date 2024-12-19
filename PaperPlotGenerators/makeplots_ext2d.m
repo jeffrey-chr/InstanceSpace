@@ -34,8 +34,8 @@ hc5 = fplot(@(x) 0*x, [175 950], 'k')
 hold off
 ylim([-2 2]);
 xlim([175 950]);
-title("3-cycle flow instances")
-xlabel("Number of 3-cycles");
+title("Triangle flow instances")
+xlabel("Number of triangles");
 ylabel("Algorithm performance")
 legend([hc1,hc2,hc3,hc4,hc5], ["Hcube distances", "Drexx distances", "BMA stronger", "MMAS stronger", "Algorithms even"], 'Location', 'SouthOutside', 'NumColumns', 3);
 print(gcf,'-dpng',[outputdir 'ext_perf_tcycle.png']);
