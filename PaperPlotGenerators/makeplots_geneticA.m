@@ -153,10 +153,11 @@ maxy = max([model.pilot.Z(:,2); targets(:,2); yr ]);
 
 for p = 1:nplots
 
-    figure(p)
+    figure(1)
     f = gcf;
     f.Position = [50 50 800 600];
-        
+
+    hold off
     scatter(model.pilot.Z(:,1), model.pilot.Z(:,2), 10, [0.94 0.94 0.94], 'filled');
     hold on
 

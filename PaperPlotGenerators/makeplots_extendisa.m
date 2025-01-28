@@ -128,7 +128,8 @@ print(gcf,'-dpng',[outputdir 'extone_hybrid.png']);
 print(gcf,'-depsc',[outputdir 'extone_hybrid.eps']);
 
 % specific plot
-spec1sources = repmat([""], length(supp.subsource) + size(model.cloist.Zecorr,1), 1);
+%spec1sources = repmat([""], length(supp.subsource) + size(model.cloist.Zecorr,1), 1);
+spec1sources = repmat([""], length(supp.subsource), 1);
 for i = 1:length(supp.subsource)
     if startsWith(supp.subsource{i},"other-gen-palubeckis")
         spec1sources(i) = "Palubeckis";
@@ -144,15 +145,26 @@ for i = 1:length(supp.subsource)
         spec1sources(i) = "";
     end
 end
-for i = 1:size(model.cloist.Zecorr,1)
-    spec1sources(length(supp.subsource) + i) = "Boundary";
-end
+% for i = 1:size(model.cloist.Zecorr,1)
+%     spec1sources(length(supp.subsource) + i) = "Boundary vertices";
+% end
 spec1sourcescat = categorical(spec1sources);
-typs = {"Palubeckis", "Terminal", "Hypercube","QAPSAT", "DreXX", "Boundary"};
+%typs = {"Palubeckis", "Terminal", "Hypercube","QAPSAT", "DreXX", "Boundary vertices"};
+typs = {"Palubeckis", "Terminal", "Hypercube","QAPSAT", "DreXX"};
 
-tmpZ = [model.pilot.Z; model.cloist.Zecorr];
+%tmpZ = [model.pilot.Z; model.cloist.Zecorr];
+tmpZ = model.pilot.Z;
 
 drawSources(tmpZ, spec1sourcescat, cmap, typs);
+hold on
+ubound = ceil(max(model.cloist.Zedge));
+lbound = floor(min(model.cloist.Zedge));
+axis square; axis([lbound(1) ubound(1) lbound(2) ubound(2)]);
+xticks(lbound(1):ubound(1));
+yticks(lbound(2):ubound(2));
+linehandle1 = plot(model.cloist.Zedge(:,1), model.cloist.Zedge(:,2), 'r', "DisplayName", "Boundary");
+linehandle2 = plot(model.cloist.Zecorr(:,1), model.cloist.Zecorr(:,2), 'r:', "DisplayName", "Likely boundary");
+hold off
 title('Selected sub-classes and boundary')
 print(gcf,'-dpng',[outputdir 'extone_specific.png']);
 print(gcf,'-depsc',[outputdir 'extone_specific.eps']);

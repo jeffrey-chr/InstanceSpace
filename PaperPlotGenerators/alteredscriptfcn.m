@@ -41,7 +41,7 @@ end
 % =========================================================================
 % SUBFUNCTIONS
 % =========================================================================
-function handle = drawSources(Z, S, cmap, sourcelabels)
+function handle2 = drawSources(Z, S, cmap, sourcelabels)
 
 ubound = ceil(max(Z));
 lbound = floor(min(Z));
@@ -85,6 +85,8 @@ set(findall(gcf,'-property','LineWidth'),'LineWidth',1);
 ubound = ceil(max(Z));
 lbound = floor(min(Z));
 axis square; axis([lbound(1) ubound(1) lbound(2) ubound(2)]);
+xticks(lbound(1):ubound(1));
+yticks(lbound(2):ubound(2));
 % cpos = leg.Position;
 % leg.set("Position", [(1 - cpos(3))/2, 0.01, cpos(3), cpos(4)]);
 % gca().set("Position", gca().Position + [0.03 0.06 -0.06 -0.06]);

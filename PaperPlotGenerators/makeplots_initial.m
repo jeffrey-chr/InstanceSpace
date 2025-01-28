@@ -24,7 +24,8 @@ alteredscriptfcn
 % source plots
 
 % qaplib plot
-qsources = repmat([""], length(supp.subsource) + size(model.cloist.Zecorr,1), 1);
+%qsources = repmat([""], length(supp.subsource) + size(model.cloist.Zecorr,1), 1);
+qsources = repmat([""], length(supp.subsource), 1);
 for i = 1:length(supp.subsource)
     if contains(supp.subsource{i},"qaplib")
         qsources(i) = "QAPLIB instances";
@@ -32,15 +33,27 @@ for i = 1:length(supp.subsource)
         qsources(i) = "";
     end
 end
-for i = 1:size(model.cloist.Zecorr,1)
-    qsources(length(supp.subsource) + i) = "Inferred boundary";
-end
+% for i = 1:size(model.cloist.Zedge,1)
+%     qsources(length(supp.subsource) + i) = "Boundary vertices";
+% end
 qsourcescat = categorical(qsources);
-typs = {"QAPLIB instances","Inferred boundary"};
+typs = {"QAPLIB instances"}
+%typs = {"QAPLIB instances","Boundary vertices"};
 
-tmpZ = [model.pilot.Z; model.cloist.Zecorr];
+%tmpZ = [model.pilot.Z; model.cloist.Zecorr];
+tmpZ = model.pilot.Z;
 
-drawSources(tmpZ, qsourcescat, cmap, typs);
+handles = drawSources(tmpZ, qsourcescat, cmap, typs);
+hold on
+ubound = ceil(max(model.cloist.Zedge));
+lbound = floor(min(model.cloist.Zedge));
+axis square; axis([lbound(1) ubound(1) lbound(2) ubound(2)]);
+xticks(lbound(1):ubound(1));
+yticks(lbound(2):ubound(2));
+linehandle1 = plot(model.cloist.Zedge(:,1), model.cloist.Zedge(:,2), 'r', "DisplayName", "Boundary");
+linehandle2 = plot(model.cloist.Zecorr(:,1), model.cloist.Zecorr(:,2), 'r:', "DisplayName", "Likely boundary");
+hold off
+
 title('QAPLIB Instances and Instance Space Boundary')
 print(gcf,'-dpng',[outputdir 'init_qaplib.png']);
 print(gcf,'-depsc',[outputdir 'init_qaplib.eps']);
@@ -182,7 +195,7 @@ f.Position = goodpos;
 
 % feature plots
 Xaux = (model.data.X-min(model.data.X,[],1))./range(model.data.X,1);
-longfeat = {'Distance Sparsity', "Distance Triangle Ineq. Sat.", "Distance Betafit Alpha", "Distance Near Similarity", "Distribution Similarity", "Average Distance to Optima"};
+longfeat = {'Distance Sparsity', "Distance TRIPOD Score", "Distance Betafit Alpha", "Distance Near Similarity", "Distribution Similarity", "Average Distance to Optima"};
 for i=1:nfeats
     clf;
     drawScatter(model.pilot.Z, Xaux(:,i),...

@@ -1,7 +1,8 @@
 clear;
 
 f = gcf;
-f.Position = [50 50 800 600];
+goodpos = [50 50 800 600];
+f.Position = goodpos;
 
 cmap = @copper;
 
@@ -70,6 +71,10 @@ rcfeatZ = rcfeatsel*model.pilot.A';
 outputdir = '.\output\';
 
 % flowcluster plot
+
+f = gcf;
+goodpos = [50 50 800 700];
+f.Position = goodpos;
 
 pfcZ = [model.pilot.Z; fcfeatZ];
 subs = [supp.subsource; fcsupptable.subsource];
